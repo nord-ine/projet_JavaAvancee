@@ -32,7 +32,7 @@ public class GameState {
                 }
             }
         }
-
+    return null;
     }
 
 
@@ -68,7 +68,7 @@ public class GameState {
                 }
             }
         }
-
+    return null;
     }
 
     private boolean valideCoordianateX(int x){
