@@ -4,18 +4,20 @@ public class Point {
 
     private int x;
     private int y;
-    private int shotNumber;
+    public int shotNumber;
 
-    public Point(int shotNb){
+    public Point(int x, int y, int shotNb){
+        this.x = x;
+        this.y = y;
         shotNumber=shotNb;
     }
 
     public Point(int x, int y){
-        this.x = y;
+        this.x = x;
         this.y = y;
     }
 
-    public int getShotNhmber() {
+    public int getShotNumber() {
         return shotNumber;
     }
 
@@ -26,7 +28,11 @@ public class Point {
     public int getY() {
         return y;
     }
-
+    
+    @Override
+    public String toString() {
+    	return "("+ x+  ","+ y+ ")";
+    }
 
     @Override
     public boolean equals(Object o){

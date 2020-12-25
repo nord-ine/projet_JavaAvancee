@@ -5,7 +5,7 @@ public class Line {
     private Point startPoint;
     private Point endpoint;
 
-    Direction dir;
+    private Direction dir;
 
 
 
@@ -15,18 +15,26 @@ public class Line {
         if(s.getX()==e.getX()) dir=Direction.horizontal;
         if(s.getY()==e.getY()) dir=Direction.vertical;
         if((s.getX()>e.getX() && s.getY()>e.getY()) ||(s.getX()<e.getX() && s.getY()<e.getY())) dir=Direction.diagonal1;
-        if((s.getX()>e.getX() && s.getY()<e.getY()) ||(s.getX()<e.getX() && s.getY()>e.getY())) dir=Direction.diagonal1;
+        if((s.getX()>e.getX() && s.getY()<e.getY()) ||(s.getX()<e.getX() && s.getY()>e.getY())) dir=Direction.diagonal2;
 
     }
 
 
-
+    public Direction getDir() {
+        return dir;
+    }
+ 
     public Point getEndpoint() {
         return endpoint;
     }
 
     public Point getStartPoint() {
         return startPoint;
+    }
+    
+    @Override
+    public String toString () {
+    	return "extrémité " + this.startPoint + " extremité " + this.endpoint + "\n";
     }
 
     @Override

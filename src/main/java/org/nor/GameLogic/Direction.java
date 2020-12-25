@@ -1,5 +1,5 @@
 package org.nor.GameLogic;
 
 public enum Direction {
-    horizontal,vertical,diagonal1,diagonal2;
+    horizontal,vertical,diagonal1,diagonal2,none;
 }
