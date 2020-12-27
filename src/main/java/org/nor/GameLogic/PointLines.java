@@ -5,19 +5,22 @@ import java.util.*;
 
 public class PointLines {
 	Point point;
-	List<Line> listLines;
+	List<Lines> listLines;
 	
-	public PointLines(Point p, List<Line> l){
+	public PointLines(Point p, List<Lines> l){
 		this.point = p;
 		this.listLines = l;
 	}
 
+	public Point getPoint(){
+		return point;
+	}
 
 	@Override
 	public String toString(){
 		String str = point.toString();
 		
-		for(Line line : listLines) {
+		for(Lines line : listLines) {
 			str = str +" "+ line.toString();
 		}
 		return str;

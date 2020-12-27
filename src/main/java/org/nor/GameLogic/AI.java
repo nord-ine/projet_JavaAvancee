@@ -2,7 +2,7 @@ package org.nor.GameLogic;
 
 import java.util.List;
 
-public abstract class AI implements GameMode{
+public abstract class AI{
 
 	public abstract OnePointOneLine whichChoiceToTake(List<PointLines> listPointLines);
 	
@@ -14,10 +14,13 @@ public abstract class AI implements GameMode{
     		pointLine = whichChoiceToTake(listPointLines);
     		System.out.println(pointLine.point);
     		System.out.print(pointLine.line);
-    		pointLine.point.setShotNumber(shotNumber);
+			System.out.print(shotNumber+"\n\n");
+    		pointLine.point.setState(shotNumber);
 			gs.getAllListLines().add(pointLine.line);
 			shotNumber++;
     		listPointLines = gs.getValidePoints();
 		}
+		System.out.print(gs.getAllListLines().size());
+
     }
 }

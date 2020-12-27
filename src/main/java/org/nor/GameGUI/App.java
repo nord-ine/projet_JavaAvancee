@@ -1,16 +1,19 @@
 package org.nor.GameGUI;
 
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.chart.ScatterChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import org.nor.GameLogic.*;
 
 
 /**
@@ -18,11 +21,13 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+    GameState gameModel;
 
+    Scene menuScene;
+    GameScene gameScene;
 
-    private final static int HIGHT = 600;
-    private final static int WIDTH = 700;
-    Scene scene1, scene2;
+    final static double bias = 10;
+
 
 
     @Override
@@ -30,26 +35,50 @@ public class App extends Application {
 
 
         stage.setTitle("Morpion Game");
+        stage.setResizable(false);
 
-//Scene 1
-        Label label1= new Label("This is the first scene");
-        Button button1= new Button("Go to scene 2");
-        Button buttun3 = new Button("new ");
-        button1.setOnAction(e -> stage.setScene(scene2));
-        HBox layout1 = new HBox(20);
-        layout1.getChildren().addAll(label1, button1,buttun3);
-        scene1= new Scene(layout1, WIDTH, HIGHT);
-
-//Scene 2
-        Label label2= new Label("This is the second scene");
-        Button button2= new Button("Go to scene 1");
-        button2.setOnAction(e -> stage.setScene(scene1));
-        VBox layout2= new VBox(20);
-        layout2.getChildren().addAll(label2, button2);
-        scene2= new Scene(layout2,WIDTH,HIGHT);
+        Label gameName= new Label("Morpion Solitaire");
+        Button playerButton= new Button("play");
+        Button computerButton= new Button("let the AI play");
+        Button algorithmButton= new Button("compare the algorithms");
 
 
-        stage.setScene(scene1);
+
+
+        ChoiceBox<String> gameTypeChoiceBox = new ChoiceBox();
+        gameTypeChoiceBox.getItems().addAll("5T","5D","4T","4D");
+        gameTypeChoiceBox.setValue("5T");
+
+        ChoiceBox<String> AlgoChoiceBox = new ChoiceBox();
+        AlgoChoiceBox.getItems().addAll("Random","NMCS");
+        AlgoChoiceBox.setValue("Random");
+
+
+        VBox layout1 = new VBox(20);
+        layout1.setAlignment(Pos.CENTER);
+        layout1.getChildren().addAll(gameName,gameTypeChoiceBox,playerButton,computerButton,AlgoChoiceBox,algorithmButton);
+        menuScene = new Scene(layout1);
+
+        playerButton.setOnAction(e -> {
+            gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox));
+            gameScene = new GameScene(stage,menuScene,gameModel);
+            PlayerController pc = new PlayerController(gameModel,gameScene);
+            stage.setScene(gameScene.sc);
+
+
+
+        });
+        computerButton.setOnAction(e -> {
+                    gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox), getAIAlgorithm(AlgoChoiceBox));
+                    gameScene = new GameScene(stage, menuScene, gameModel);
+                    stage.setScene(gameScene.sc);
+                    gameModel.startGame();
+                    gameScene.displayGrid();
+                    gameScene.UpdateScore();
+
+                });
+
+        stage.setScene(menuScene);
         stage.show();
     }
 
@@ -57,6 +86,41 @@ public class App extends Application {
         launch();
     }
 
+    private int getLineSize(ChoiceBox<String> cb){
+            return Integer.parseInt(cb.getValue().substring(0,1));
 
     }
+
+    private GameVersion getGameVersion(ChoiceBox<String> cb){
+
+        switch (cb.getValue().substring(1)){
+            case "T":
+                return new T();
+
+            case "D":
+                return new D();
+
+            default:
+                return new T();
+        }
+    }
+
+    private AI getAIAlgorithm(ChoiceBox<String> cb){
+
+        switch (cb.getValue()){
+            case "Random":
+                return new RandomAI();
+
+            case "NMCS":
+                return new NMCSAI();
+            default:
+                return new RandomAI();
+        }
+
+    }
+
+
+
+
+}
 

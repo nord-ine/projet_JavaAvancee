@@ -1,6 +1,6 @@
 package org.nor.GameLogic;
 
-public class Line {
+public class Lines {
 
     private Point extremite1;
     private Point extremite2;
@@ -9,7 +9,7 @@ public class Line {
 
 
 
-    public Line(Point s,Point e){
+    public Lines(Point s, Point e){
         extremite1=s;
         extremite2=e;
         direction = direction.none;
@@ -70,9 +70,9 @@ public class Line {
 
     @Override
     public boolean equals(Object o){
-        if(! (o instanceof Line)) return false;
+        if(! (o instanceof Lines)) return false;
 
-        Line l = (Line) o;
+        Lines l = (Lines) o;
 
         return  (extremite1==l.getExtremite1()) && (extremite2==l.getExtremite2()) || (extremite1==l.getExtremite2()) && (extremite2==l.getExtremite1());
     }

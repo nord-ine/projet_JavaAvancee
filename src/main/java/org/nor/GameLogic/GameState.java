@@ -1,10 +1,8 @@
 package org.nor.GameLogic;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class GameState {
 
@@ -13,41 +11,57 @@ public class GameState {
     private final static int GRID_WIDTH = 20;
     
     private GameVersion gameVersion;
-    private GameMode gameMode;
+    private AI aI;
     private int lineSize;
     private int score;
-    
+
     private Point[][] gameGrid = new Point[GRID_HIGHT][GRID_WIDTH];
-    private Set<Line> allListLines = new HashSet<>();
-
-    
-    
+    private List<Lines> allListLines = new ArrayList<>();
 
 
-	public GameState(int lineSize,GameVersion gameVersion, GameMode gameMode){
-    	this.gameMode = gameMode;
-    	this.lineSize = lineSize;
-    	this.gameVersion = gameVersion;
-    	startingGrid();
-    }
+
+
+
+	public GameState(int lineSize,GameVersion gameVersion, AI gameMode){
+		this.aI = gameMode;
+		this.lineSize = lineSize;
+		this.gameVersion = gameVersion;
+		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
+	}
+
+	public GameState(int lineSize,GameVersion gameVersion){
+		this.lineSize = lineSize;
+		this.gameVersion = gameVersion;
+		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
+	}
     
     public void startGame() {
-    	gameMode.startPlay(this);
+    	aI.startPlay(this);
     }
-    
-    public void changeState(Point p, Line l) {
-    	this.gameGrid[p.getX()][p.getY()].setShotNumber(p.getShotNumber());
+
+    private void printGrid(){
+		for (int i = 0; i < GRID_HIGHT ; i++) {
+			System.out.println();
+			for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
+				System.out.print('\t');
+				System.out.print(gameGrid[i][j].getState());
+			}
+		}
+	}
+
+    public void changeState(Point p, Lines l) {
+    	this.gameGrid[p.getX()][p.getY()].setState(p.getState());
     	this.allListLines.add(l);
     }
-    
-    public List<PointLines> getValidePoints(){
+
+	public List<PointLines> getValidePoints(){
     	List<PointLines> listPointLines = new ArrayList<>();
     	PointLines pl;
-    	List<Line> listLines;
+    	List<Lines> listLines;
 
         for(int i =0; i < GRID_HIGHT; i++){
             for(int j=0; j < GRID_WIDTH; j++){
-                if(gameGrid[i][j].getShotNumber() == -1){
+                if(gameGrid[i][j].getState() == -1){
                 	listLines = getPossibleLinesOfShots(gameGrid[i][j]);
                 	if(listLines.size() > 0){
                 		pl = new PointLines(gameGrid[i][j],listLines);
@@ -60,12 +74,12 @@ public class GameState {
     }
 
 
-    public List<Line> getPossibleLinesOfShots(Point p){
+    public List<Lines> getPossibleLinesOfShots(Point p){
         int x = p.getX();
         int y = p.getY();
         int x_,y_;
 
-        List<Line> candidatesLines= allCandidatesLinesOfPoint(p);
+        List<Lines> candidatesLines= allCandidatesLinesOfPoint(p);
         x_ = 0;
         y_ = 0;
         Direction direction;
@@ -85,9 +99,9 @@ public class GameState {
         	       			else { bool = false; direction = Direction.none;}
                 			if(bool){
                 				if(!gameVersion.canTUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
-        		                    Iterator<Line> it = candidatesLines.iterator();
+        		                    Iterator<Lines> it = candidatesLines.iterator();
         		                    while(it.hasNext()) {
-        		                        Line l = it.next() ;
+        		                        Lines l = it.next() ;
         		                        
         		                        if(l.getDirection() == direction && l.isPointInLine(gameGrid[x_][y_])){
         		                            it.remove();
@@ -106,121 +120,21 @@ public class GameState {
     }
 
 
-    
-    public void startingGrid() {
-    	
-    	for (int i = 0; i < GRID_HIGHT ; i++) {
-    		for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
-    			this.gameGrid[i][j] = new Point(i, j, -1 ,GRID_HIGHT,GRID_WIDTH); 
-    		}
-    	}
-    	
-    	int x = (int) GRID_HIGHT/2;
-    	int y = (int) GRID_WIDTH/2;
-    	int a = lineSize-1;
-    	
-    	if (a == 4) {
+    private List<Lines> allCandidatesLinesOfPoint(Point p){
 
-        	gameGrid[x - a][y-1].setShotNumber(0);
-        	gameGrid[x - a][y].setShotNumber(0);
-        	gameGrid[x - a][y + 1].setShotNumber(0);
-        	gameGrid[x - a][y + 2].setShotNumber(0);
-        	
-
-        	gameGrid[x - 1][y-1].setShotNumber(0);
-        	gameGrid[x - 1][y-2].setShotNumber(0);
-        	gameGrid[x - 1][y-3].setShotNumber(0); 
-        	gameGrid[x - 1][y-4].setShotNumber(0);
-        	
-        	gameGrid[x - 1][y+2].setShotNumber(0);
-        	gameGrid[x - 1][y+3].setShotNumber(0); 
-        	gameGrid[x - 1][y+4].setShotNumber(0); 
-        	gameGrid[x - 1][y+5].setShotNumber(0);
-        	
-
-        	gameGrid[x + 2][y-1].setShotNumber(0); 
-        	gameGrid[x + 2][y-2].setShotNumber(0); 
-        	gameGrid[x + 2][y-3].setShotNumber(0); 
-        	gameGrid[x + 2][y-4].setShotNumber(0); 
-        	
-        	gameGrid[x + 2][y+2].setShotNumber(0); 
-        	gameGrid[x + 2][y+3].setShotNumber(0); 
-        	gameGrid[x + 2][y+4].setShotNumber(0); 
-        	gameGrid[x + 2][y+5].setShotNumber(0); 
-
-        	gameGrid[x + 5][y-1].setShotNumber(0); 
-        	gameGrid[x + 5][y].setShotNumber(0);
-        	gameGrid[x + 5][y + 1].setShotNumber(0);
-        	gameGrid[x + 5][y + 2].setShotNumber(0);
-        	
-
-        	gameGrid[x][y - 4].setShotNumber(0); 
-        	gameGrid[x + 1][y - 4].setShotNumber(0);
-        	
-        	gameGrid[x - 3][y - 1].setShotNumber(0);
-        	gameGrid[x - 2][y - 1].setShotNumber(0);
-        	gameGrid[x + 3][y - 1].setShotNumber(0);
-        	gameGrid[x + 4][y - 1].setShotNumber(0);
-
-        	gameGrid[x][y + 5].setShotNumber(0);
-        	gameGrid[x + 1][y + 5].setShotNumber(0);
-        	
-        	gameGrid[x - 3][y + 2].setShotNumber(0);
-        	gameGrid[x - 2][y + 2].setShotNumber(0);
-        	gameGrid[x + 3][y + 2].setShotNumber(0);
-        	gameGrid[x + 4][y + 2].setShotNumber(0);
-        	
-    	}
-    	
-    	if (a == 3) {
-
-        	gameGrid[x - 3][y - 1].setShotNumber(0);
-        	gameGrid[x - 3][y].setShotNumber(0);
-        	gameGrid[x - 3][y + 1].setShotNumber(0); 
-        	
-        	gameGrid[x + 3][y - 1].setShotNumber(0); 
-        	gameGrid[x + 3][y].setShotNumber(0); 
-        	gameGrid[x + 3][y + 1].setShotNumber(0);
-
-        	gameGrid[x - 1][y - 3].setShotNumber(0);
-        	gameGrid[x - 1][y - 2].setShotNumber(0);
-        	gameGrid[x - 1][y - 1].setShotNumber(0);
-        	gameGrid[x - 1][y + 1].setShotNumber(0);
-        	gameGrid[x - 1][y + 2].setShotNumber(0);
-        	gameGrid[x - 1][y + 3].setShotNumber(0);
-        	
-
-        	gameGrid[x + 1][y - 3].setShotNumber(0); 
-        	gameGrid[x + 1][y - 2].setShotNumber(0); 
-        	gameGrid[x + 1][y - 1].setShotNumber(0); 
-        	gameGrid[x + 1][y + 1].setShotNumber(0); 
-        	gameGrid[x + 1][y + 2].setShotNumber(0); 
-        	gameGrid[x + 1][y + 3].setShotNumber(0); 
-        	
-        	gameGrid[x - 2][y - 1].setShotNumber(0); 
-        	gameGrid[x - 2][y + 1].setShotNumber(0); 
-        	gameGrid[x][y + 3].setShotNumber(0); 
-        	gameGrid[x][y - 3].setShotNumber(0); 
-        	gameGrid[x + 2][y - 1].setShotNumber(0); 
-        	gameGrid[x + 2][y + 1].setShotNumber(0); 
-		}
-    }
-
-    private List<Line> allCandidatesLinesOfPoint(Point p){
-
-        List<Line> candidatesLines= new ArrayList<>();
+        List<Lines> candidatesLines= new ArrayList<>();
         int x_, y_;
         int x = p.getX(), y = p.getY();
         
         for(y_ = y-((lineSize-1)); y_<=y ; y_++){
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(y_ + (lineSize-1),GRID_WIDTH)) {
-        		candidatesLines.add(new Line(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
+        		candidatesLines.add(new Lines(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
         	}
         }
 
         for(x_ = x-(lineSize-1) ; x_<=x ; x_++){
         	if(Point.valideCoordianate(x_,GRID_HIGHT) &&Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT) ) {
-        		candidatesLines.add(new Line(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
+        		candidatesLines.add(new Lines(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
         	}
         }
 
@@ -228,7 +142,7 @@ public class GameState {
         	y_ = y+i;
         	x_ = x+i;
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT)&& Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT)) {
-                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
+                candidatesLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
         	}
         }
 
@@ -236,26 +150,23 @@ public class GameState {
         	y_ = y + i;
         	x_ = x - i;
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_-(lineSize-1),GRID_HIGHT)) {
-                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
+                candidatesLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
         	}
         }
         
         return candidatesLines;
     }
-    
-    
-    
+
+
     public GameVersion getGameVersion() {
 		return gameVersion;
 	}
 	public void setGameVersion(GameVersion gameVersion) {
 		this.gameVersion = gameVersion;
 	}
-	public GameMode getGameMode() {
-		return gameMode;
-	}
-	public void setGameMode(GameMode gameMode) {
-		this.gameMode = gameMode;
+	public AI getaI() {return aI;}
+	public void setaI(AI aI) {
+		this.aI = aI;
 	}
 	public int getLineSize() {
 		return lineSize;
@@ -275,10 +186,10 @@ public class GameState {
 	public void setGameGrid(Point[][] gameGrid) {
 		this.gameGrid = gameGrid;
 	}
-	public Set<Line> getAllListLines() {
+	public List<Lines> getAllListLines() {
 		return allListLines;
 	}
-	public void setAllListLines(Set<Line> allListLines) {
+	public void setAllListLines(List<Lines> allListLines) {
 		this.allListLines = allListLines;
 	}
 	public static int getGridHight() {

@@ -1,21 +1,24 @@
 package org.nor.GameLogic;
 
+import java.util.List;
 import java.util.Set;
 
 public class Point {
 
     private int x;
     private int y;
-    private int shotNumber;
+    private int state;
 
     public Point(int x, int y, int shotNb,int limitHight,int limitWidth){
     	if(valideCoordianate(x,limitHight) && valideCoordianate(y,limitWidth) ) {
             this.x = x;
             this.y = y;
-            shotNumber=shotNb;
+            state =shotNb;
     	}else System.err.println("the point ("+ x +  ","+ y+ ")  cannot be instantiated");
     		
     }
+
+
 
     public void setX(int x) {
 		this.x = x;
@@ -25,8 +28,8 @@ public class Point {
 		this.y = y;
 	}
 
-	public void setShotNumber(int shotNumber) {
-		this.shotNumber = shotNumber;
+	public void setState(int state) {
+		this.state = state;
 	}
 
 	public Point(int x, int y,int limitHight,int limitWidth){
@@ -41,9 +44,14 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-    
-    public int getShotNumber() {
-        return shotNumber;
+
+    public Point(int x, int y,int s){
+        this.x = x;
+        this.y = y;
+        this.state=s;
+    }
+    public int getState() {
+        return state;
     }
 
     public int getX() {
@@ -64,8 +72,8 @@ public class Point {
     
     
 
-    public boolean isPointInSetLines(Direction direction, Set<Line> setLines){
-        for(Line l : setLines){
+    public boolean isPointInSetLines(Direction direction, List<Lines> setLines){
+        for(Lines l : setLines){
             if(l.getDirection() == direction){
             	
                 if(l.isPointInLine(this)) {return true;}
@@ -75,10 +83,10 @@ public class Point {
     }
     
 
-    public boolean isPointTotallyInsideSetLines(Direction direction, Set<Line> setLines){
-        for(Line l : setLines){
+    public boolean isPointTotallyInsideSetLines(Direction direction, List<Lines> setLines){
+        for(Lines l : setLines){
             if(l.getDirection() == direction){
-                if(l.isPointTotallyInsideLine(this)) {System.out.println(this + "ce point est a l'interieur de " + l);return true;}
+                if(l.isPointTotallyInsideLine(this)) {;return true;}
             }
         }
         return false;
