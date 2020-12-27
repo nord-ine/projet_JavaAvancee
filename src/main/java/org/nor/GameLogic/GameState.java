@@ -1,30 +1,45 @@
 package org.nor.GameLogic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class GameState {
 
 
     private final static int GRID_HIGHT = 20;
     private final static int GRID_WIDTH = 20;
-    GameVersion gameVersion;
-    int lineSize;
-    boolean touch;
-    Point[][] gameGrid = new Point[GRID_HIGHT][GRID_WIDTH];
-    public List<Line> listLines = new ArrayList<>();
+    
+    private GameVersion gameVersion;
+    private GameMode gameMode;
+    private int lineSize;
     private int score;
+    
+    private Point[][] gameGrid = new Point[GRID_HIGHT][GRID_WIDTH];
+    private Set<Line> allListLines = new HashSet<>();
 
-    public GameState(){
-    	for (int i = 0; i < GRID_HIGHT ; i++) {
-    		for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
-    			this.gameGrid[i][j] = new Point(i, j, -1); 
-    		}
-    	}
+    
+    
+
+
+	public GameState(int lineSize,GameVersion gameVersion, GameMode gameMode){
+    	this.gameMode = gameMode;
+    	this.lineSize = lineSize;
+    	this.gameVersion = gameVersion;
+    	startingGrid();
     }
-
-
+    
+    public void startGame() {
+    	gameMode.startPlay(this);
+    }
+    
+    public void changeState(Point p, Line l) {
+    	this.gameGrid[p.getX()][p.getY()].setShotNumber(p.getShotNumber());
+    	this.allListLines.add(l);
+    }
+    
     public List<PointLines> getValidePoints(){
     	List<PointLines> listPointLines = new ArrayList<>();
     	PointLines pl;
@@ -50,99 +65,228 @@ public class GameState {
         int y = p.getY();
         int x_,y_;
 
-        List<Line> candidatesLines= new ArrayList<>();
-
-        for(y_ = y-4; y_<=y ; y_++){
-        	if(valideCoordianateY(y_) && valideCoordianateX(y_ + 4) ) {
-        		candidatesLines.add(new Line(gameGrid[x][y_],gameGrid[x][y_+4]));
-        	}
-        }
-
-        for(x_ = x-4 ; x_<=x ; x_++){
-        	if(valideCoordianateY(x_) && valideCoordianateX(x_ + 4) ) {
-        		candidatesLines.add(new Line(gameGrid[x_][y],gameGrid[x_+4][y]));
-        	}
-        }
-
-        for(int i = -4 ; i <= 0 ; i++){
-        	y_ = y+i;
-        	x_ = x+i;
-        	if(valideCoordianateY(y_) && valideCoordianateX(x_) && valideCoordianateY(y_ + 4) && valideCoordianateX(x_ + 4)) {
-                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_+4][y_+4]));
-        	}
-        }
-
-        for(int i = -4 ; i <= 0 ; i++){
-        	y_ = y + i;
-        	x_ = x - i;
-        	if(valideCoordianateY(y_) && valideCoordianateX(x_) && valideCoordianateY(y_ + 4) && valideCoordianateX(x_ - 4)) {
-                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_- 4][ y_ + 4 ]));
-        	}
-        }
+        List<Line> candidatesLines= allCandidatesLinesOfPoint(p);
         x_ = 0;
         y_ = 0;
-        Direction dir;
+        Direction direction;
         boolean bool;
-        x_ = x - 4;
-        while(x_ <= x + 4 && candidatesLines.size() > 0){
-	        y_ = y - 4;
-	        while(y_ <= y + 4 && candidatesLines.size() > 0){
-	        	bool = false;
-	        	if(valideCoordianateY(y_) && valideCoordianateX(x_) && (x != x_|| y != y_)){ 
-	       			if(x == x_) {dir = Direction.horizontal; bool = true;}
-	       			else if(y == y_) {dir = Direction.vertical;bool = true;}
-	       			else if(x-y == x_-y_) {dir = Direction.diagonal1;bool = true;}
-	       			else if(x+y == x_+ y_) {dir = Direction.diagonal2;bool = true;}
-	       			else { bool = false; dir = Direction.none;}
-        			if(bool){
-        				if((gameGrid[x_][y_].getShotNumber() >= 0 && isPointExtrimityOfListLines(gameGrid[x_][y_],dir)) || gameGrid[x_][y_].getShotNumber() == -1) {
-        	       			
-		                    Iterator<Line> it = candidatesLines.iterator();
-		                    while(it.hasNext()) {
-		                        Line l = it.next() ;
-		                        if(l.getDir() == dir && pointInLine(gameGrid[x_][y_],l)){
-		                            it.remove();
-		                        }
-		                    }
-		                }
-        			}
-	        	}
-	        	y_++;
-	        }
+        x_ = x - (lineSize-1);
+        while(x_ <= x + (lineSize-1) && candidatesLines.size() > 0){
+        	if (Point.valideCoordianate(x_, GRID_HIGHT)) {
+    	        y_ = y - ((lineSize-1));
+    	        while(y_ <= y + (lineSize-1) && candidatesLines.size() > 0){
+    	        	if (Point.valideCoordianate(y_, GRID_WIDTH)) {
+        	        	bool = false;
+        	        	if(x != x_|| y != y_){
+        	       			if(x == x_) {direction = Direction.horizontal; bool = true;}
+        	       			else if(y == y_) {direction = Direction.vertical;bool = true;}
+        	       			else if(x-y == x_-y_) {direction = Direction.diagonal1;bool = true;}
+        	       			else if(x+y == x_+ y_) {direction = Direction.diagonal2;bool = true;}
+        	       			else { bool = false; direction = Direction.none;}
+                			if(bool){
+                				if(!gameVersion.canTUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
+        		                    Iterator<Line> it = candidatesLines.iterator();
+        		                    while(it.hasNext()) {
+        		                        Line l = it.next() ;
+        		                        
+        		                        if(l.getDirection() == direction && l.isPointInLine(gameGrid[x_][y_])){
+        		                            it.remove();
+        		                        }
+        		                    }
+        		                }
+                			}
+        	        	}
+					}
+    	        	y_++;
+    	        }
+			}
 	        x_++;
         }
         return candidatesLines;
     }
 
-    private boolean valideCoordianateX(int x){
-        return x >= 0 && x < GRID_HIGHT;
+
+    
+    public void startingGrid() {
+    	
+    	for (int i = 0; i < GRID_HIGHT ; i++) {
+    		for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
+    			this.gameGrid[i][j] = new Point(i, j, -1 ,GRID_HIGHT,GRID_WIDTH); 
+    		}
+    	}
+    	
+    	int x = (int) GRID_HIGHT/2;
+    	int y = (int) GRID_WIDTH/2;
+    	int a = lineSize-1;
+    	
+    	if (a == 4) {
+
+        	gameGrid[x - a][y-1].setShotNumber(0);
+        	gameGrid[x - a][y].setShotNumber(0);
+        	gameGrid[x - a][y + 1].setShotNumber(0);
+        	gameGrid[x - a][y + 2].setShotNumber(0);
+        	
+
+        	gameGrid[x - 1][y-1].setShotNumber(0);
+        	gameGrid[x - 1][y-2].setShotNumber(0);
+        	gameGrid[x - 1][y-3].setShotNumber(0); 
+        	gameGrid[x - 1][y-4].setShotNumber(0);
+        	
+        	gameGrid[x - 1][y+2].setShotNumber(0);
+        	gameGrid[x - 1][y+3].setShotNumber(0); 
+        	gameGrid[x - 1][y+4].setShotNumber(0); 
+        	gameGrid[x - 1][y+5].setShotNumber(0);
+        	
+
+        	gameGrid[x + 2][y-1].setShotNumber(0); 
+        	gameGrid[x + 2][y-2].setShotNumber(0); 
+        	gameGrid[x + 2][y-3].setShotNumber(0); 
+        	gameGrid[x + 2][y-4].setShotNumber(0); 
+        	
+        	gameGrid[x + 2][y+2].setShotNumber(0); 
+        	gameGrid[x + 2][y+3].setShotNumber(0); 
+        	gameGrid[x + 2][y+4].setShotNumber(0); 
+        	gameGrid[x + 2][y+5].setShotNumber(0); 
+
+        	gameGrid[x + 5][y-1].setShotNumber(0); 
+        	gameGrid[x + 5][y].setShotNumber(0);
+        	gameGrid[x + 5][y + 1].setShotNumber(0);
+        	gameGrid[x + 5][y + 2].setShotNumber(0);
+        	
+
+        	gameGrid[x][y - 4].setShotNumber(0); 
+        	gameGrid[x + 1][y - 4].setShotNumber(0);
+        	
+        	gameGrid[x - 3][y - 1].setShotNumber(0);
+        	gameGrid[x - 2][y - 1].setShotNumber(0);
+        	gameGrid[x + 3][y - 1].setShotNumber(0);
+        	gameGrid[x + 4][y - 1].setShotNumber(0);
+
+        	gameGrid[x][y + 5].setShotNumber(0);
+        	gameGrid[x + 1][y + 5].setShotNumber(0);
+        	
+        	gameGrid[x - 3][y + 2].setShotNumber(0);
+        	gameGrid[x - 2][y + 2].setShotNumber(0);
+        	gameGrid[x + 3][y + 2].setShotNumber(0);
+        	gameGrid[x + 4][y + 2].setShotNumber(0);
+        	
+    	}
+    	
+    	if (a == 3) {
+
+        	gameGrid[x - 3][y - 1].setShotNumber(0);
+        	gameGrid[x - 3][y].setShotNumber(0);
+        	gameGrid[x - 3][y + 1].setShotNumber(0); 
+        	
+        	gameGrid[x + 3][y - 1].setShotNumber(0); 
+        	gameGrid[x + 3][y].setShotNumber(0); 
+        	gameGrid[x + 3][y + 1].setShotNumber(0);
+
+        	gameGrid[x - 1][y - 3].setShotNumber(0);
+        	gameGrid[x - 1][y - 2].setShotNumber(0);
+        	gameGrid[x - 1][y - 1].setShotNumber(0);
+        	gameGrid[x - 1][y + 1].setShotNumber(0);
+        	gameGrid[x - 1][y + 2].setShotNumber(0);
+        	gameGrid[x - 1][y + 3].setShotNumber(0);
+        	
+
+        	gameGrid[x + 1][y - 3].setShotNumber(0); 
+        	gameGrid[x + 1][y - 2].setShotNumber(0); 
+        	gameGrid[x + 1][y - 1].setShotNumber(0); 
+        	gameGrid[x + 1][y + 1].setShotNumber(0); 
+        	gameGrid[x + 1][y + 2].setShotNumber(0); 
+        	gameGrid[x + 1][y + 3].setShotNumber(0); 
+        	
+        	gameGrid[x - 2][y - 1].setShotNumber(0); 
+        	gameGrid[x - 2][y + 1].setShotNumber(0); 
+        	gameGrid[x][y + 3].setShotNumber(0); 
+        	gameGrid[x][y - 3].setShotNumber(0); 
+        	gameGrid[x + 2][y - 1].setShotNumber(0); 
+        	gameGrid[x + 2][y + 1].setShotNumber(0); 
+		}
     }
 
-    private boolean valideCoordianateY(int y){
-        return y >= 0 && y < GRID_WIDTH;
-    }
+    private List<Line> allCandidatesLinesOfPoint(Point p){
 
-    boolean isPointExtrimityOfListLines(Point p,Direction d){
-        for(Line l : this.listLines){
-            if(l.getDir() == d){
-                if(p.equals(l.getStartPoint()) || p.equals(l.getEndpoint())) return true;
-            }
+        List<Line> candidatesLines= new ArrayList<>();
+        int x_, y_;
+        int x = p.getX(), y = p.getY();
+        
+        for(y_ = y-((lineSize-1)); y_<=y ; y_++){
+        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(y_ + (lineSize-1),GRID_WIDTH)) {
+        		candidatesLines.add(new Line(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
+        	}
         }
-        return false;
+
+        for(x_ = x-(lineSize-1) ; x_<=x ; x_++){
+        	if(Point.valideCoordianate(x_,GRID_HIGHT) &&Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT) ) {
+        		candidatesLines.add(new Line(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
+        	}
+        }
+
+        for(int i = -((lineSize-1)) ; i <= 0 ; i++){
+        	y_ = y+i;
+        	x_ = x+i;
+        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT)&& Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT)) {
+                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
+        	}
+        }
+
+        for(int i = -((lineSize-1)) ; i <= 0 ; i++){
+        	y_ = y + i;
+        	x_ = x - i;
+        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_-(lineSize-1),GRID_HIGHT)) {
+                candidatesLines.add(new Line(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
+        	}
+        }
+        
+        return candidatesLines;
     }
+    
+    
+    
+    public GameVersion getGameVersion() {
+		return gameVersion;
+	}
+	public void setGameVersion(GameVersion gameVersion) {
+		this.gameVersion = gameVersion;
+	}
+	public GameMode getGameMode() {
+		return gameMode;
+	}
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
+	public int getLineSize() {
+		return lineSize;
+	}
+	public void setLineSize(int lineSize) {
+		this.lineSize = lineSize;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
+	public Point[][] getGameGrid() {
+		return gameGrid;
+	}
+	public void setGameGrid(Point[][] gameGrid) {
+		this.gameGrid = gameGrid;
+	}
+	public Set<Line> getAllListLines() {
+		return allListLines;
+	}
+	public void setAllListLines(Set<Line> allListLines) {
+		this.allListLines = allListLines;
+	}
+	public static int getGridHight() {
+		return GRID_HIGHT;
+	}
+	public static int getGridWidth() {
+		return GRID_WIDTH;
+	}
 
-    boolean pointInLine(Point p, Line l){
-        Point vecteur1 = new Point( p.getX() - l.getStartPoint().getX(),  p.getY() -l.getStartPoint().getY() );
 
-        Point vecteur2 = new Point( l.getEndpoint().getX() - l.getStartPoint().getX(),  l.getEndpoint().getY() -l.getStartPoint().getY() );
-
-        float k1 = (float)vecteur1.getX()/vecteur2.getX();
-        if(vecteur2.getY()*k1 == vecteur1.getY() && k1 >= 0 && k1 <= 1) return true;
-        
-        
-        float k2 = (float)vecteur1.getY()/vecteur2.getY();
-        if(vecteur2.getX()*k2 == vecteur1.getX() && k2 >= 0 && k2 <= 1) return true;
-        
-        return false;
-    }
 }

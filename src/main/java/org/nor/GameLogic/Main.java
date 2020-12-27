@@ -4,35 +4,27 @@ package org.nor.GameLogic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
 	
     public static void main(String[] args) {
-    	GameState gs = new GameState();
-    	gs.gameGrid[2][8].shotNumber = 3;
-    	gs.gameGrid[6][4].shotNumber = 0;
-    	gs.gameGrid[4][6].shotNumber = 0;
-    	gs.gameGrid[3][7].shotNumber = 0;
     	
-    	gs.gameGrid[5][4].shotNumber = 0;
-    	gs.gameGrid[5][1].shotNumber = 0;
-    	gs.gameGrid[5][2].shotNumber = 0;
-    	gs.gameGrid[5][3].shotNumber = 0;
-    	
-    	gs.gameGrid[2][4].shotNumber = 0;
-    	gs.gameGrid[2][1].shotNumber = 0;
-    	gs.gameGrid[2][2].shotNumber = 0;
-    	gs.gameGrid[2][3].shotNumber = 0;
-    	
-    	gs.listLines.add(new Line(new Point(5, 1), new Point(5, 4)));
-    	List<PointLines>  listPointLines = gs.getValidePoints();
-    	System.out.println(listPointLines.size());
-    	for(PointLines pointLine : listPointLines){
-    		System.out.println(pointLine);
+    	GameState gs = new GameState(5,new D(), new RandomAI());
+    	gs.startGame();
+    	/*
+    	Set<Line> sl = gs.getPossibleLinesOfShots(new Point(5, 5));
+    	System.out.println();
+    	for(Line l : sl){
+    		System.out.println(l);
     	}
-	
     	
+	/*
+    	Line l = new Line(new Point(0,0),new Point(2, 2));
+    	
+    	System.out.println(l.isPointTotallyInsideLine(new Point(0, 0)));
+    	*/
     	//System.out.println(gs.pointInLine(new Point(0,0), new Line(new Point(0, 0), new Point(2, 2))));
     }
 }

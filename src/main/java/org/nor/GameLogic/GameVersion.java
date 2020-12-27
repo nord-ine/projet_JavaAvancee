@@ -1,5 +1,7 @@
 package org.nor.GameLogic;
 
-public enum GameVersion {
-    fiveT,fiveD;
+import java.util.Set;
+
+public interface GameVersion {
+	boolean canTUseThisPoint(Point p, Direction direction,Set<Line> setLines);
 }

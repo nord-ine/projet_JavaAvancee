@@ -1,17 +1,15 @@
 package org.nor.GameLogic;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class PointLines {
 	Point point;
 	List<Line> listLines;
 	
 	public PointLines(Point p, List<Line> l){
-		point = p;
-		listLines = l;
+		this.point = p;
+		this.listLines = l;
 	}
 
 
