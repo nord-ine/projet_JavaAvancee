@@ -74,7 +74,7 @@ public class App extends Application {
                     stage.setScene(gameScene.sc);
                     gameModel.startGame();
                     gameScene.displayGrid();
-                    gameScene.UpdateScore();
+                    gameScene.updateScore();
 
                 });
 

@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -21,9 +20,7 @@ import org.nor.GameLogic.Lines;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class GameScene {
     Scene sc;
@@ -34,7 +31,7 @@ public class GameScene {
     GridPane pointsGrid;
     Pane stack;
     int score = 0;
-    private final static int CELL_SIZE=28;
+    final static int CELL_SIZE=28;
     final static double CELL_SIZE_BIAS = 8;
 
     static int counter=0;
@@ -68,18 +65,6 @@ public class GameScene {
 
     }
 
-    public void drawPointCandidates(List<PointLines> listPointLines){
-
-        for(PointLines pl : listPointLines){
-            ImageView viewPoint =new ImageView();
-            viewPoint.xProperty().setValue(pl.getPoint().getX());
-            viewPoint.yProperty().setValue(pl.getPoint().getY());
-            viewPoint.setFitHeight(CELL_SIZE);
-            viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:Images/button-2.png"));
-            pointsGrid.add(viewPoint,pl.getPoint().getX(),pl.getPoint().getY());
-        }
-    }
     public void reDrawPointCandidates(List<PointLines> listPointLines){
 
         for(PointLines pl : listPointLines){
@@ -112,7 +97,6 @@ public class GameScene {
 
 
 
-
     public void upadateViewPoint(List<Point> listPoints){
 
         for(Point p : listPoints){
@@ -129,7 +113,7 @@ public class GameScene {
         }
     }
 
-    public void drawMoveLine(Lines line){
+    public void drawLine(Lines line){
         Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
         l.setStroke(Color.GRAY);
         stack.getChildren().add(l);
@@ -137,7 +121,7 @@ public class GameScene {
         System.out.println("jai affché ca"+counter);
     }
 
-    private double mapModelCoordinateToViewCoordinate(int coordinate){
+    protected double mapModelCoordinateToViewCoordinate(int coordinate){
         return coordinate*CELL_SIZE+CELL_SIZE/2;
     }
 
@@ -171,7 +155,7 @@ public class GameScene {
 
 
     private void drawAllLines(List<Lines> listLines){
-        for(Lines l : listLines) drawMoveLine(l);
+        for(Lines l : listLines) drawLine(l);
     }
 
 
@@ -183,7 +167,7 @@ public class GameScene {
 
         Button  bb = new Button("b");
         bb.setOnAction(e->{
-            drawMoveLine(new Lines(new Point(1,1),new Point(4,2)));
+            drawLine(new Lines(new Point(1,1),new Point(4,2)));
         });
         HBox header= new HBox(200);
         header.getChildren().addAll(labelGameversion, labelGameRecord,goBackToMenuButton,bb);
@@ -221,7 +205,7 @@ public class GameScene {
 
     }
 
-    protected void UpdateScore(){
+    public void updateScore(){
         scoreLabelValue.setValue("score : "+model.getScore());
     }
 }

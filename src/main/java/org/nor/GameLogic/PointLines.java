@@ -16,6 +16,9 @@ public class PointLines {
 		return point;
 	}
 
+	public List<Lines> getLines(){
+		return listLines;
+	}
 	@Override
 	public String toString(){
 		String str = point.toString();
