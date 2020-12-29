@@ -17,6 +17,7 @@ public abstract class AI{
 			System.out.print(shotNumber+"\n\n");
     		pointLine.point.setState(shotNumber);
 			gs.getAllListLines().add(pointLine.line);
+			gs.setScore(shotNumber);
 			shotNumber++;
     		listPointLines = gs.getValidePoints();
 		}

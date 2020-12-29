@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,12 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.nor.GameLogic.GameState;
 import org.nor.GameLogic.Lines;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameScene {
@@ -30,11 +33,8 @@ public class GameScene {
 
     GridPane pointsGrid;
     Pane stack;
-    int score = 0;
-    final static int CELL_SIZE=28;
-    final static double CELL_SIZE_BIAS = 8;
 
-    static int counter=0;
+    final static int CELL_SIZE=28;
     private StringProperty scoreLabelValue = new SimpleStringProperty("score : 0");
 
     public GameScene(Stage window, Scene menu, GameState model){
@@ -44,7 +44,65 @@ public class GameScene {
         buildGameScene();
     }
 
-    public ImageView getImageView(Point p){
+
+
+    protected void buildGameScene(){
+        Label gameVersionLabel = new Label("model.getGameVersion().toString()");
+        Button goBackToMenuButton= new Button("quit game");
+        goBackToMenuButton.setOnAction(e -> window.setScene(menu));
+
+
+        HBox header= new HBox(300);
+        header.getChildren().addAll(gameVersionLabel,goBackToMenuButton);
+
+        header.setAlignment(Pos.CENTER);
+        pointsGrid = new GridPane();
+        stack = new Pane();
+
+        displayGrid();
+
+        pointsGrid.setAlignment(Pos.CENTER);
+
+        stack.getChildren().add(pointsGrid);
+
+        BorderPane borderPane = new BorderPane();
+
+        Label scoreLabel = new Label(scoreLabelValue.getValue());
+        scoreLabel.textProperty().bind(scoreLabelValue);
+
+        borderPane.setTop(header);
+        borderPane.setCenter(stack);
+        borderPane.setLeft(scoreLabel);
+
+        BorderPane.setMargin(stack, new Insets(50,120,120,300));
+
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        sc= new Scene(borderPane,screenBounds.getWidth(), screenBounds.getHeight());
+
+    }
+    public void updateScore(){
+        scoreLabelValue.setValue("score : "+model.getScore());
+    }
+
+    protected void displayGrid(){
+        Point p;
+        for(int i=0; i<GameState.getGridHight(); i++) {
+            for (int j = 0; j < GameState.getGridWidth(); j++) {
+                p=model.getGameGrid()[i][j];
+                if(p.getState()>0){
+
+                    pointsGrid.add(getViewOfAMovePoint(p),j,i);
+                }
+                else {
+                    pointsGrid.add(getViewOfAPoint(p),j,i);
+                }
+            }
+        }
+        drawAllLines(model.getAllListLines());
+
+    }
+
+    private ImageView getViewOfAPoint(Point p){
         ImageView viewPoint =new ImageView();
         viewPoint.xProperty().setValue(p.getX());
         viewPoint.yProperty().setValue(p.getY());
@@ -64,23 +122,9 @@ public class GameScene {
         }
 
     }
-
-    public void reDrawPointCandidates(List<PointLines> listPointLines){
-
-        for(PointLines pl : listPointLines){
-            ImageView viewPoint =new ImageView();
-            viewPoint.xProperty().setValue(pl.getPoint().getX());
-            viewPoint.yProperty().setValue(pl.getPoint().getY());
-            viewPoint.setFitHeight(CELL_SIZE);
-            viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:Images/button-1.png"));
-            pointsGrid.add(viewPoint,pl.getPoint().getX(),pl.getPoint().getY());
-        }
-    }
-
     //function to replace image of point with the shot number image
 
-    public StackPane getCheckedPoint(Point p){
+    protected StackPane getViewOfAMovePoint(Point p){
         int i =p.getX();
         int j = p.getY();
 
@@ -94,119 +138,72 @@ public class GameScene {
         StackPane sp = new StackPane(imV,ll);
         return sp;
     }
-
-
-
-    public void upadateViewPoint(List<Point> listPoints){
-
-        for(Point p : listPoints){
-            pointsGrid.add(getImageView(p),p.getY(),p.getX());
-        }
-    }
-
-    public void drawChoiceLines(List<Lines> listLines){
-        for(Lines line: listLines){
-            Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
-            l.setStroke(Color.GREEN);
-            l.setStrokeWidth(3);
-            stack.getChildren().add(l);
-        }
-    }
-
-    public void drawLine(Lines line){
-        Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
-        l.setStroke(Color.GRAY);
-        stack.getChildren().add(l);
-        counter++;
-        System.out.println("jai affché ca"+counter);
-    }
-
-    protected double mapModelCoordinateToViewCoordinate(int coordinate){
-        return coordinate*CELL_SIZE+CELL_SIZE/2;
-    }
-
-    protected void displayGrid(){
-
-
-        //pointsGrid = new GridPane();
-        Point p;
-        for(int i=0; i<20; i++) {
-            for (int j = 0; j < 20; j++) {
-                p=model.getGameGrid()[i][j];
-                if(p.getState()>0){
-                    //pointsGrid.setColumnIndex(getCheckedPoint(p), i);
-                    //pointsGrid.setRowIndex(getCheckedPoint(p), j);
-                    //pointsGrid.getChildren().add(i*j,getCheckedPoint(p));
-                    pointsGrid.add(getCheckedPoint(p),j,i);
-                }
-                else {
-                    pointsGrid.add(getImageView(p),j,i);
-                }
-                //ImageView viewPoint = getImageView(model.getGameGrid()[i][j]);
-                /*Label ll = new Label("25");
-                ll.setFont(new Font("Arial",5));
-                StackPane sp = new StackPane(viewPoint,ll);*/
-                //pointsGrid.add(viewPoint, j,i);
-            }
-        }
-        drawAllLines(model.getAllListLines());
-
-    }
-
-
     private void drawAllLines(List<Lines> listLines){
         for(Lines l : listLines) drawLine(l);
     }
 
-
-    protected void buildGameScene(){
-        Label labelGameversion= new Label("game version : ");
-        Label labelGameRecord= new Label("game record : ");
-        Button goBackToMenuButton= new Button("quit game");
-        goBackToMenuButton.setOnAction(e -> window.setScene(menu));
-
-        Button  bb = new Button("b");
-        bb.setOnAction(e->{
-            drawLine(new Lines(new Point(1,1),new Point(4,2)));
-        });
-        HBox header= new HBox(200);
-        header.getChildren().addAll(labelGameversion, labelGameRecord,goBackToMenuButton,bb);
-
-        pointsGrid = new GridPane();
-        stack = new Pane();
-
-        displayGrid();
-
-
-        pointsGrid.setAlignment(Pos.CENTER);
-
-        //Line l = new Line(mapModelCoordinateToViewCoordinate(0), mapModelCoordinateToViewCoordinate(3), mapModelCoordinateToViewCoordinate(4), mapModelCoordinateToViewCoordinate(4));
-        //l.setStroke(Color.RED);
-
-        stack.getChildren().add(pointsGrid);
-
-        BorderPane borderPane = new BorderPane();
-
-        Label scoreLabel = new Label(scoreLabelValue.getValue());
-        scoreLabel.textProperty().bind(scoreLabelValue);
-
-        borderPane.setTop(header);
-        borderPane.setCenter(stack);
-        borderPane.setLeft(scoreLabel);
-
-
-
-        BorderPane.setMargin(stack, new Insets(30,120,120,120));
-
-
-        sc= new Scene(borderPane);
-
-
-
+    protected void drawLine(Lines line){
+        Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
+        l.setStroke(Color.GRAY);
+        stack.getChildren().add(l);
     }
 
-    public void updateScore(){
-        scoreLabelValue.setValue("score : "+model.getScore());
+    public void drawCandidatePoints(List<PointLines> listPointLines, PlayerController playerController){
+
+        for(PointLines pl : listPointLines){
+            ImageView viewPoint =new ImageView();
+            viewPoint.xProperty().setValue(pl.getPoint().getX());
+            viewPoint.yProperty().setValue(pl.getPoint().getY());
+            viewPoint.setFitHeight(CELL_SIZE);
+            viewPoint.setFitWidth(CELL_SIZE);
+            viewPoint.setImage(new Image("file:Images/button-2.png"));
+            viewPoint.setOnMouseClicked(e->{
+                //System.out.println(pl);
+                eraseDrawOfCandidatePoints(listPointLines);
+                playerController.validateLine(pl);
+            });
+            pointsGrid.add(viewPoint,pl.getPoint().getY(),pl.getPoint().getX());
+        }
     }
+    public void eraseDrawOfCandidatePoints(List<PointLines> listPointLines){
+
+        for(PointLines pl : listPointLines){
+            ImageView viewPoint =new ImageView();
+            viewPoint.xProperty().setValue(pl.getPoint().getX());
+            viewPoint.yProperty().setValue(pl.getPoint().getY());
+            viewPoint.setFitHeight(CELL_SIZE);
+            viewPoint.setFitWidth(CELL_SIZE);
+            viewPoint.setImage(new Image("file:Images/button-1.png"));
+            pointsGrid.add(viewPoint,pl.getPoint().getY(),pl.getPoint().getX());
+        }
+    }
+
+    protected void drawChoiceLines(PointLines pl,PlayerController playerController){
+        List<Line> listViewLine= new ArrayList<>();
+        for(Lines line: pl.getLines()){
+
+            Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
+            listViewLine.add(l);
+            l.setStroke(Color.rgb(getRandomRGBNumber(),getRandomRGBNumber(),getRandomRGBNumber()));
+            l.setStrokeWidth(5);
+            l.setOnMouseClicked(e->{
+                for(int i =0;i<listViewLine.size();i++) stack.getChildren().remove(listViewLine.get(i));
+                playerController.validateMove(pl.getPoint(),line);
+            });
+            stack.getChildren().add(l);
+        }
+    }
+    private int getRandomRGBNumber(){
+
+        return (int)(Math.random() * 255);
+    }
+
+
+    private double mapModelCoordinateToViewCoordinate(int coordinate){
+        return coordinate*CELL_SIZE+CELL_SIZE/2;
+    }
+
+
+
 }
 

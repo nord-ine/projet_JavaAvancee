@@ -1,17 +1,13 @@
 package org.nor.GameGUI;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.nor.GameLogic.*;
 
@@ -20,29 +16,19 @@ import org.nor.GameLogic.*;
  * JavaFX App
  */
 public class App extends Application {
-
-    GameState gameModel;
-
-    Scene menuScene;
-    GameScene gameScene;
-
-    final static double bias = 10;
-
-
+    private Scene menuScene;
 
     @Override
     public void start(Stage stage) {
 
-
         stage.setTitle("Morpion Game");
         stage.setResizable(false);
+        stage.setMaximized(true);
 
         Label gameName= new Label("Morpion Solitaire");
         Button playerButton= new Button("play");
         Button computerButton= new Button("let the AI play");
         Button algorithmButton= new Button("compare the algorithms");
-
-
 
 
         ChoiceBox<String> gameTypeChoiceBox = new ChoiceBox();
@@ -54,28 +40,25 @@ public class App extends Application {
         AlgoChoiceBox.setValue("Random");
 
 
-        VBox layout1 = new VBox(20);
-        layout1.setAlignment(Pos.CENTER);
-        layout1.getChildren().addAll(gameName,gameTypeChoiceBox,playerButton,computerButton,AlgoChoiceBox,algorithmButton);
-        menuScene = new Scene(layout1);
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+        menu.getChildren().addAll(gameName,gameTypeChoiceBox,playerButton,computerButton,AlgoChoiceBox,algorithmButton);
+
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        menuScene = new Scene(menu,screenBounds.getWidth(), screenBounds.getHeight());
 
         playerButton.setOnAction(e -> {
-            gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox));
-            gameScene = new GameScene(stage,menuScene,gameModel);
-            PlayerController pc = new PlayerController(gameModel,gameScene);
-            stage.setScene(gameScene.sc);
-
-
+                    GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox));
+                    GameScene gameScene = new GameScene(stage,menuScene,gameModel);
+                    PlayerController pc = new PlayerController(gameModel,gameScene);
+                    stage.setScene(gameScene.sc);
 
         });
         computerButton.setOnAction(e -> {
-                    gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox), getAIAlgorithm(AlgoChoiceBox));
-                    gameScene = new GameScene(stage, menuScene, gameModel);
+                    GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox), getAIAlgorithm(AlgoChoiceBox));
+                    GameScene gameScene = new GameScene(stage, menuScene, gameModel);
                     stage.setScene(gameScene.sc);
-                    gameModel.startGame();
-                    gameScene.displayGrid();
-                    gameScene.updateScore();
-
+                    AIController aic = new AIController(gameModel,gameScene);
                 });
 
         stage.setScene(menuScene);

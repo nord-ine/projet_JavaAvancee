@@ -198,6 +198,4 @@ public class GameState {
 	public static int getGridWidth() {
 		return GRID_WIDTH;
 	}
-
-
 }
