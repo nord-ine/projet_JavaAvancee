@@ -62,7 +62,7 @@ public class GameState {
         for(int i =0; i < GRID_HIGHT; i++){
             for(int j=0; j < GRID_WIDTH; j++){
                 if(gameGrid[i][j].getState() == -1){
-                	listLines = getPossibleLinesOfShots(gameGrid[i][j]);
+                	listLines = getValideLinesForAPoint(gameGrid[i][j]);
                 	if(listLines.size() > 0){
                 		pl = new PointLines(gameGrid[i][j],listLines);
                 		listPointLines.add(pl);
@@ -74,12 +74,12 @@ public class GameState {
     }
 
 
-    public List<Lines> getPossibleLinesOfShots(Point p){
+    public List<Lines> getValideLinesForAPoint(Point p){
         int x = p.getX();
         int y = p.getY();
         int x_,y_;
 
-        List<Lines> candidatesLines= allCandidatesLinesOfPoint(p);
+        List<Lines> candidatesLines= getCandidateLinesForAPoint(p);
         x_ = 0;
         y_ = 0;
         Direction direction;
@@ -96,7 +96,7 @@ public class GameState {
         	       			else if(y == y_) {direction = Direction.vertical;bool = true;}
         	       			else if(x-y == x_-y_) {direction = Direction.diagonal1;bool = true;}
         	       			else if(x+y == x_+ y_) {direction = Direction.diagonal2;bool = true;}
-        	       			else { bool = false; direction = Direction.none;}
+        	       			else { direction = Direction.none;bool = false;}
                 			if(bool){
                 				if(!gameVersion.canTUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
         		                    Iterator<Lines> it = candidatesLines.iterator();
@@ -120,21 +120,22 @@ public class GameState {
     }
 
 
-    private List<Lines> allCandidatesLinesOfPoint(Point p){
+    // for this method : add another one which takes as parameter(incrementX(which is returned by a method in the direction enum),incrementY) and returns list<Lines>
+    private List<Lines> getCandidateLinesForAPoint(Point p){
 
-        List<Lines> candidatesLines= new ArrayList<>();
+        List<Lines> candidateLines= new ArrayList<>();
         int x_, y_;
         int x = p.getX(), y = p.getY();
         
         for(y_ = y-((lineSize-1)); y_<=y ; y_++){
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(y_ + (lineSize-1),GRID_WIDTH)) {
-        		candidatesLines.add(new Lines(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
+        		candidateLines.add(new Lines(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
         	}
         }
 
         for(x_ = x-(lineSize-1) ; x_<=x ; x_++){
         	if(Point.valideCoordianate(x_,GRID_HIGHT) &&Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT) ) {
-        		candidatesLines.add(new Lines(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
+        		candidateLines.add(new Lines(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
         	}
         }
 
@@ -142,7 +143,7 @@ public class GameState {
         	y_ = y+i;
         	x_ = x+i;
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT)&& Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT)) {
-                candidatesLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
+                candidateLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
         	}
         }
 
@@ -150,11 +151,11 @@ public class GameState {
         	y_ = y + i;
         	x_ = x - i;
         	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_-(lineSize-1),GRID_HIGHT)) {
-                candidatesLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
+                candidateLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
         	}
         }
         
-        return candidatesLines;
+        return candidateLines;
     }
 
 
@@ -164,8 +165,8 @@ public class GameState {
 	public void setGameVersion(GameVersion gameVersion) {
 		this.gameVersion = gameVersion;
 	}
-	public AI getaI() {return aI;}
-	public void setaI(AI aI) {
+	public AI getAI() {return aI;}
+	public void setAI(AI aI) {
 		this.aI = aI;
 	}
 	public int getLineSize() {
