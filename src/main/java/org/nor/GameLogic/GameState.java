@@ -120,43 +120,31 @@ public class GameState {
     }
 
 
-    // for this method : add another one which takes as parameter(incrementX(which is returned by a method in the direction enum),incrementY) and returns list<Lines>
-    private List<Lines> getCandidateLinesForAPoint(Point p){
+	private List<Lines> getCandidateLinesForAPoint(Point p){
+		List<Lines> candidateLines= new ArrayList<>();
+		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.horizontal));
+		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.vertical));
+		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.diagonal1));
+		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.diagonal2));
+		return candidateLines;
+	}
 
-        List<Lines> candidateLines= new ArrayList<>();
-        int x_, y_;
-        int x = p.getX(), y = p.getY();
-        
-        for(y_ = y-((lineSize-1)); y_<=y ; y_++){
-        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(y_ + (lineSize-1),GRID_WIDTH)) {
-        		candidateLines.add(new Lines(gameGrid[x][y_],gameGrid[x][y_+(lineSize-1)]));
-        	}
-        }
+	private List<Lines> getCandidateLinesForAPointInOneDirection(Point p,Direction direction){
+		List<Lines> candidateLinesInOneDirection= new ArrayList<>();
+		int x_, y_;
+		int x = p.getX(), y = p.getY();
+		for(int i = -((lineSize-1)) ; i <= 0 ; i++){
+			int incrX = direction.getIncrementX();
+			int incrY = direction.getIncrementY();
+			y_ = y + incrY* i;
+			x_ = x +incrX*i;
+			if (Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+incrY*(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+incrX*(lineSize-1),GRID_HIGHT))	{
+			candidateLinesInOneDirection.add(new Lines(gameGrid[x_][y_],gameGrid[x_+incrX*(lineSize-1)][y_+incrY*(lineSize-1)]));
+			}
+		}
 
-        for(x_ = x-(lineSize-1) ; x_<=x ; x_++){
-        	if(Point.valideCoordianate(x_,GRID_HIGHT) &&Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT) ) {
-        		candidateLines.add(new Lines(gameGrid[x_][y],gameGrid[x_+(lineSize-1)][y]));
-        	}
-        }
-
-        for(int i = -((lineSize-1)) ; i <= 0 ; i++){
-        	y_ = y+i;
-        	x_ = x+i;
-        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT)&& Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+(lineSize-1),GRID_HIGHT)) {
-                candidateLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_+(lineSize-1)][y_+(lineSize-1)]));
-        	}
-        }
-
-        for(int i = -((lineSize-1)) ; i <= 0 ; i++){
-        	y_ = y + i;
-        	x_ = x - i;
-        	if(Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_-(lineSize-1),GRID_HIGHT)) {
-                candidateLines.add(new Lines(gameGrid[x_][y_],gameGrid[x_- (lineSize-1)][ y_ + (lineSize-1) ]));
-        	}
-        }
-        
-        return candidateLines;
-    }
+		return candidateLinesInOneDirection;
+	}
 
 
     public GameVersion getGameVersion() {
