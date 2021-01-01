@@ -111,13 +111,13 @@ public class GameScene {
         viewPoint.setFitWidth(CELL_SIZE);
         switch (p.getState()){
             case -2:
-                viewPoint.setImage(new Image("file:Images/button-2.png"));
+                viewPoint.setImage(new Image("file:src/main/Images/button-2.png"));
                 return viewPoint;
             case -1:
-                viewPoint.setImage(new Image("file:Images/button-1.png"));
+                viewPoint.setImage(new Image("file:src/main/Images/button-1.png"));
                 return viewPoint;
             default:
-                viewPoint.setImage(new Image("file:Images/button0.png"));
+                viewPoint.setImage(new Image("file:src/main/Images/button0.png"));
                 return viewPoint;
         }
 
@@ -128,7 +128,7 @@ public class GameScene {
         int i =p.getX();
         int j = p.getY();
 
-        ImageView imV = new ImageView(new Image("file:Images/button-x.png"));
+        ImageView imV = new ImageView(new Image("file:src/main/Images/button-x.png"));
         imV.xProperty().setValue(i);
         imV.yProperty().setValue(j);
         imV.setFitHeight(CELL_SIZE);
@@ -156,7 +156,7 @@ public class GameScene {
             viewPoint.yProperty().setValue(pl.getPoint().getY());
             viewPoint.setFitHeight(CELL_SIZE);
             viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:Images/button-2.png"));
+            viewPoint.setImage(new Image("file:src/main/Images/button-2.png"));
             viewPoint.setOnMouseClicked(e->{
                 //System.out.println(pl);
                 eraseDrawOfCandidatePoints(listPointLines);
@@ -173,7 +173,7 @@ public class GameScene {
             viewPoint.yProperty().setValue(pl.getPoint().getY());
             viewPoint.setFitHeight(CELL_SIZE);
             viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:Images/button-1.png"));
+            viewPoint.setImage(new Image("file:src/main/Images/button-1.png"));
             pointsGrid.add(viewPoint,pl.getPoint().getY(),pl.getPoint().getX());
         }
     }
