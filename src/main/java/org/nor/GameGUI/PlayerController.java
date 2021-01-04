@@ -69,7 +69,6 @@ public class PlayerController {
         view.drawLine(l);
         view.pointsGrid.add(view.getViewOfAMovePoint(p),p.getY(),p.getX());
         listPointLines = model.getValidePoints();
-        System.out.println(listPointLines);
         playMove(listPointLines);
     }
 }

@@ -55,17 +55,6 @@ public class GameState {
     	aI.startPlay(this);
     }
 
-   /* private void printGrid(){
-		for (int i = 0; i < GRID_HIGHT ; i++) {
-			System.out.println();
-			for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
-				System.out.print('\t');
-				System.out.print(gameGrid[i][j].getState());
-			}
-		}
-	}
-*/
-
 	/**
 	 * method for changing the state of the game (validate a move)
 	 * @param p Point

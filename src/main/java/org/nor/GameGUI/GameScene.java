@@ -39,7 +39,7 @@ public class GameScene {
     GridPane pointsGrid;
     Pane stack;
 
-    final static int CELL_SIZE=28;
+    final static int CELL_SIZE=20;
     private StringProperty scoreLabelValue = new SimpleStringProperty("score : 0");
 
     /**
@@ -59,15 +59,14 @@ public class GameScene {
      * method responsible for drawing the initial view of the game scene (buttons , initial grid)
      */
     protected void buildGameScene(){
-        Label gameVersionLabel = new Label("model.getGameVersion().toString()");
         Button goBackToMenuButton= new Button("quit game");
         goBackToMenuButton.setOnAction(e -> window.setScene(menu));
 
 
         HBox header= new HBox(300);
-        header.getChildren().addAll(gameVersionLabel,goBackToMenuButton);
+        header.getChildren().addAll(goBackToMenuButton);
 
-        header.setAlignment(Pos.CENTER);
+        header.setAlignment(Pos.CENTER_RIGHT);
         pointsGrid = new GridPane();
         stack = new Pane();
 
