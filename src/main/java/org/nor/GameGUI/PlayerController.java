@@ -46,12 +46,12 @@ public class PlayerController {
      */
     protected void validateLine(PointLines pl){
         //System.out.println(p);
-        if(pl.getLines().size()>1){
+        if(pl.getListLines().size()>1){
 
             view.drawChoiceLines(pl,this);
         }
         else {
-            validateMove(pl.getPoint(),pl.getLines().get(0));
+            validateMove(pl.getPoint(),pl.getListLines().get(0));
         }
     }
 

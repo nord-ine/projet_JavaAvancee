@@ -11,8 +11,8 @@ import java.util.List;
 public class GameState {
 
 
-    private final static int GRID_HIGHT = 20;
-    private final static int GRID_WIDTH = 20;
+    private final static int GRID_HIGHT = 30;
+    private final static int GRID_WIDTH = 30;
     
     private GameVersion gameVersion;
     private AI aI;
@@ -33,7 +33,7 @@ public class GameState {
 		this.aI = gameMode;
 		this.lineSize = lineSize;
 		this.gameVersion = gameVersion;
-		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
+		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH,gameVersion);
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class GameState {
 	public GameState(int lineSize,GameVersion gameVersion){
 		this.lineSize = lineSize;
 		this.gameVersion = gameVersion;
-		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
+		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH,gameVersion);
 	}
 
 
@@ -105,7 +105,7 @@ public class GameState {
 	 * @param p Point
 	 * @return List<Lines>
 	 */
-    public List<Lines> getValidLinesForAPoint(Point p){
+    private List<Lines> getValidLinesForAPoint(Point p){
         int x = p.getX();
         int y = p.getY();
         int x_,y_;
@@ -129,7 +129,7 @@ public class GameState {
         	       			else if(x+y == x_+ y_) {direction = Direction.diagonal2;bool = true;}
         	       			else { direction = Direction.none;bool = false;}
                 			if(bool){
-                				if(!gameVersion.canTUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
+                				if(!gameVersion.canIUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
         		                    Iterator<Lines> it = candidatesLines.iterator();
         		                    while(it.hasNext()) {
         		                        Lines l = it.next() ;

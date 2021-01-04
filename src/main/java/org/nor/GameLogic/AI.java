@@ -24,8 +24,8 @@ public abstract class AI{
     	int shotNumber = 1;
     	while (listPointLines.size() > 0){
     		pointLine = whichChoiceToTake(listPointLines);
-    		pointLine.point.setState(shotNumber);
-			gs.getAllListLines().add(pointLine.line);
+    		pointLine.getPoint().setState(shotNumber);
+			gs.getAllListLines().add(pointLine.getLine());
 			gs.setScore(shotNumber);
 			shotNumber++;
     		listPointLines = gs.getValidePoints();

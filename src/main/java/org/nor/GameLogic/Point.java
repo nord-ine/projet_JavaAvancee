@@ -1,7 +1,6 @@
 package org.nor.GameLogic;
 
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -22,20 +21,6 @@ public class Point {
     		
     }
 
-
-
-    public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public void setState(int state) {
-		this.state = state;
-	}
-
 	public Point(int x, int y,int limitHight,int limitWidth){
     	if(valideCoordianate(x,limitHight) && valideCoordianate(y,limitWidth) ) {
             this.x = x;
@@ -54,6 +39,20 @@ public class Point {
         this.y = y;
         this.state=s;
     }
+    
+
+    public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
     public int getState() {
         return state;
     }
@@ -69,12 +68,7 @@ public class Point {
     public static boolean valideCoordianate(int x, int limit){
         return x >= 0 && x < limit;
     }
-    
-    public boolean validePoint(int limitHight,int limitWidth){
-    	return valideCoordianate(this.x, limitHight) && valideCoordianate(this.y, limitWidth);
-    }
-    
-    
+        
 
     public boolean isPointInSetLines(Direction direction, List<Lines> setLines){
         for(Lines l : setLines){

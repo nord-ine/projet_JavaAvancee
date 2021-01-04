@@ -12,7 +12,7 @@ public class Lines {
     public Lines(Point s, Point e){
         extremite1=s;
         extremite2=e;
-        direction = direction.none;
+        direction = Direction.none;
         if(s.getX()==e.getX()) direction=Direction.horizontal;
         if(s.getY()==e.getY()) direction=Direction.vertical;
         if((s.getX()>e.getX() && s.getY()>e.getY()) ||(s.getX()<e.getX() && s.getY()<e.getY())) direction=Direction.diagonal1;
@@ -74,6 +74,6 @@ public class Lines {
 
         Lines l = (Lines) o;
 
-        return  (extremite1==l.getExtremite1()) && (extremite2==l.getExtremite2()) || (extremite1==l.getExtremite2()) && (extremite2==l.getExtremite1());
+        return  (extremite1.equals(l.getExtremite1())) && (extremite2.equals(l.getExtremite2())) || (extremite1.equals(l.getExtremite2())) && (extremite2.equals(l.getExtremite1()));
     }
 }

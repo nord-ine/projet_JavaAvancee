@@ -7,8 +7,8 @@ import java.util.*;
  * class that represents a data structure for a valid point and the valid lines that pass through it
  */
 public class PointLines {
-	Point point;
-	List<Lines> listLines;
+	private Point point;
+	private List<Lines> listLines;
 	
 	public PointLines(Point p, List<Lines> l){
 		this.point = p;
@@ -19,7 +19,7 @@ public class PointLines {
 		return point;
 	}
 
-	public List<Lines> getLines(){
+	public List<Lines> getListLines(){
 		return listLines;
 	}
 	@Override
@@ -31,4 +31,14 @@ public class PointLines {
 		}
 		return str;
 	}
+	
+
+    @Override
+    public boolean equals(Object o){
+        if(! (o instanceof PointLines)) return false;
+
+        PointLines l = (PointLines) o;
+
+        return  this.getPoint().equals(l.getPoint()) && this.getListLines().equals(l.getListLines());
+    }
 }

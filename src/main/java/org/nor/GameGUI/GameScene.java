@@ -135,11 +135,11 @@ public class GameScene {
         viewPoint.setFitWidth(CELL_SIZE);
 
             if(p.getState()==-1) {
-                viewPoint.setImage(new Image("file:src/main/Images/button-1.png"));
+                viewPoint.setImage(new Image("file:button-1.png"));
                 return viewPoint;
             }
             else {
-                viewPoint.setImage(new Image("file:src/main/Images/button0.png"));
+                viewPoint.setImage(new Image("file:button0.png"));
                 return viewPoint;
             }
         }
@@ -155,7 +155,7 @@ public class GameScene {
         int i =p.getX();
         int j = p.getY();
 
-        ImageView imV = new ImageView(new Image("file:src/main/Images/button-x.png"));
+        ImageView imV = new ImageView(new Image("file:button-x.png"));
         imV.xProperty().setValue(i);
         imV.yProperty().setValue(j);
         imV.setFitHeight(CELL_SIZE);
@@ -199,7 +199,7 @@ public class GameScene {
             viewPoint.yProperty().setValue(pl.getPoint().getY());
             viewPoint.setFitHeight(CELL_SIZE);
             viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:src/main/Images/button-2.png"));
+            viewPoint.setImage(new Image("file:button-2.png"));
             viewPoint.setOnMouseClicked(e->{
                 //System.out.println(pl);
                 eraseDrawOfCandidatePoints(listPointLines);
@@ -221,7 +221,7 @@ public class GameScene {
             viewPoint.yProperty().setValue(pl.getPoint().getY());
             viewPoint.setFitHeight(CELL_SIZE);
             viewPoint.setFitWidth(CELL_SIZE);
-            viewPoint.setImage(new Image("file:src/main/Images/button-1.png"));
+            viewPoint.setImage(new Image("file:button-1.png"));
             pointsGrid.add(viewPoint,pl.getPoint().getY(),pl.getPoint().getX());
         }
     }
@@ -234,7 +234,7 @@ public class GameScene {
      */
     protected void drawChoiceLines(PointLines pl,PlayerController playerController){
         List<Line> listViewLine= new ArrayList<>();
-        for(Lines line: pl.getLines()){
+        for(Lines line: pl.getListLines()){
 
             Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
             listViewLine.add(l);
