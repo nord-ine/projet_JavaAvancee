@@ -3,6 +3,9 @@ package org.nor.GameLogic;
 
 import java.util.*;
 
+/**
+ * class that represents a data structure for a valid point and the valid lines that pass through it
+ */
 public class PointLines {
 	Point point;
 	List<Lines> listLines;

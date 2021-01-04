@@ -23,9 +23,12 @@ public class GameState {
     private List<Lines> allListLines = new ArrayList<>();
 
 
-
-
-
+	/**
+	 * class constructor
+	 * @param lineSize number of points in a line
+	 * @param gameVersion T or D
+	 * @param gameMode player or AI
+	 */
 	public GameState(int lineSize,GameVersion gameVersion, AI gameMode){
 		this.aI = gameMode;
 		this.lineSize = lineSize;
@@ -33,17 +36,26 @@ public class GameState {
 		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
 	}
 
+	/**
+	 * class constructor
+	 * @param lineSize number of points in a line
+	 * @param gameVersion T or D
+	 */
 	public GameState(int lineSize,GameVersion gameVersion){
 		this.lineSize = lineSize;
 		this.gameVersion = gameVersion;
 		this.gameGrid = Grid.startingGrid(lineSize,GRID_HIGHT,GRID_WIDTH);
 	}
-    
+
+
+	/**
+	 * method that interfaces the Ai to the controller
+	 */
     public void startGame() {
     	aI.startPlay(this);
     }
 
-    private void printGrid(){
+   /* private void printGrid(){
 		for (int i = 0; i < GRID_HIGHT ; i++) {
 			System.out.println();
 			for ( int j = 0 ; j < GRID_WIDTH ; j++ ) {
@@ -52,12 +64,22 @@ public class GameState {
 			}
 		}
 	}
+*/
 
+	/**
+	 * method for changing the state of the game (validate a move)
+	 * @param p Point
+	 * @param l Lines
+	 */
     public void changeState(Point p, Lines l) {
     	this.gameGrid[p.getX()][p.getY()].setState(p.getState());
     	this.allListLines.add(l);
     }
 
+	/**
+	 * method that searches in the grid for Points that can be played and return them as a list of the data structure PointLines
+	 * @return PointLines
+	 */
 	public List<PointLines> getValidePoints(){
     	List<PointLines> listPointLines = new ArrayList<>();
     	PointLines pl;
@@ -66,7 +88,7 @@ public class GameState {
         for(int i =0; i < GRID_HIGHT; i++){
             for(int j=0; j < GRID_WIDTH; j++){
                 if(gameGrid[i][j].getState() == -1){
-                	listLines = getValideLinesForAPoint(gameGrid[i][j]);
+                	listLines = getValidLinesForAPoint(gameGrid[i][j]);
                 	if(listLines.size() > 0){
                 		pl = new PointLines(gameGrid[i][j],listLines);
                 		listPointLines.add(pl);
@@ -78,7 +100,12 @@ public class GameState {
     }
 
 
-    public List<Lines> getValideLinesForAPoint(Point p){
+	/**
+	 * method that returns a list of valid Lines to play for a particular Point
+	 * @param p Point
+	 * @return List<Lines>
+	 */
+    public List<Lines> getValidLinesForAPoint(Point p){
         int x = p.getX();
         int y = p.getY();
         int x_,y_;
@@ -124,6 +151,11 @@ public class GameState {
     }
 
 
+	/**
+	 * method that return a list of all possible Lines that pass through a point
+	 * @param p Point
+	 * @return List<Lines>
+	 */
 	private List<Lines> getCandidateLinesForAPoint(Point p){
 		List<Lines> candidateLines= new ArrayList<>();
 		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.horizontal));
@@ -133,6 +165,12 @@ public class GameState {
 		return candidateLines;
 	}
 
+	/**
+	 * method that return a list of all possible Lines that pass through a point in a particular direction
+	 * @param p Point
+	 * @param direction
+	 * @return
+	 */
 	private List<Lines> getCandidateLinesForAPointInOneDirection(Point p,Direction direction){
 		List<Lines> candidateLinesInOneDirection= new ArrayList<>();
 		int x_, y_;

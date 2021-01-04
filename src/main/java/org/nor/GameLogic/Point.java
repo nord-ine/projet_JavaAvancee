@@ -3,6 +3,10 @@ package org.nor.GameLogic;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * class that represents a point
+ */
 public class Point {
 
     private int x;
@@ -91,20 +95,7 @@ public class Point {
         }
         return false;
     }
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     @Override
     public String toString() {
