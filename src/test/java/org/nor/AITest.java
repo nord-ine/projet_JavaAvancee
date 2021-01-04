@@ -2,7 +2,8 @@ package org.nor;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
+
 import org.nor.GameLogic.AI;
 import org.nor.GameLogic.D;
 import org.nor.GameLogic.GameState;

@@ -9,7 +9,12 @@ import java.util.*;
 public class PointLines {
 	private Point point;
 	private List<Lines> listLines;
-	
+
+	/**
+	 * class constructor
+	 * @param p
+	 * @param l
+	 */
 	public PointLines(Point p, List<Lines> l){
 		this.point = p;
 		this.listLines = l;

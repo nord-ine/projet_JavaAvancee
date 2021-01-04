@@ -1,9 +1,17 @@
 package org.nor.GameLogic;
 
+/**
+ * class containing a move point and it's corresponding line
+ */
 public class OnePointOneLine {
 	private Point point;
 	private Lines line;
 
+	/**
+	 * class constructor
+	 * @param point
+	 * @param line
+	 */
 	public OnePointOneLine(Point point, Lines line) {
 		this.point=point;
 		this.line = line;

@@ -12,6 +12,14 @@ public class Point {
     private int y;
     private int state;
 
+    /**
+     * class constructor
+     * @param x
+     * @param y
+     * @param shotNb
+     * @param limitHight
+     * @param limitWidth
+     */
     public Point(int x, int y, int shotNb,int limitHight,int limitWidth){
     	if(valideCoordianate(x,limitHight) && valideCoordianate(y,limitWidth) ) {
             this.x = x;
@@ -21,6 +29,13 @@ public class Point {
     		
     }
 
+    /**
+     * class constructor
+     * @param x
+     * @param y
+     * @param limitHight
+     * @param limitWidth
+     */
 	public Point(int x, int y,int limitHight,int limitWidth){
     	if(valideCoordianate(x,limitHight) && valideCoordianate(y,limitWidth) ) {
             this.x = x;
@@ -29,11 +44,22 @@ public class Point {
     }
 
 
+    /**
+     * class constructor
+     * @param x
+     * @param y
+     */
     public Point(int x, int y){
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * class constructor
+     * @param x
+     * @param y
+     * @param s
+     */
     public Point(int x, int y,int s){
         this.x = x;
         this.y = y;
@@ -68,10 +94,16 @@ public class Point {
     public static boolean valideCoordianate(int x, int limit){
         return x >= 0 && x < limit;
     }
-        
 
-    public boolean isPointInSetLines(Direction direction, List<Lines> setLines){
-        for(Lines l : setLines){
+
+    /**
+     * returns true if the point is in one of lines of the listLines in a particular direction
+     * @param direction
+     * @param listLines
+     * @return
+     */
+    public boolean isPointInListLines(Direction direction, List<Lines> listLines){
+        for(Lines l : listLines){
             if(l.getDirection() == direction){
             	
                 if(l.isPointInLine(this)) {return true;}
@@ -79,8 +111,14 @@ public class Point {
         }
         return false;
     }
-    
 
+
+    /**
+     * returns true if the point is in one of lines of the listLines but not an extremity in a particular direction
+     * @param direction
+     * @param setLines
+     * @return
+     */
     public boolean isPointTotallyInsideSetLines(Direction direction, List<Lines> setLines){
         for(Lines l : setLines){
             if(l.getDirection() == direction){

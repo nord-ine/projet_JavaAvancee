@@ -1,5 +1,8 @@
 package org.nor.GameLogic;
 
+/**
+ * enum representing the four directions in which a line can be made
+ */
 public enum Direction {
 
 
@@ -63,6 +66,13 @@ public enum Direction {
         
     };
 
+    /**
+     * @return by how much x  increments when moving in a direction
+     */
     protected abstract int getIncrementX();
+
+    /**
+     * @return by how much y increments when moving in a direction
+     */
     protected abstract int getIncrementY();
 }

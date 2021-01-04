@@ -28,7 +28,7 @@ public class App extends Application {
         Label gameName= new Label("Morpion Solitaire");
         Button playerButton= new Button("play");
         Button computerButton= new Button("let the AI play");
-        Button algorithmButton= new Button("compare the algorithms");
+
 
 
         ChoiceBox<String> gameTypeChoiceBox = new ChoiceBox();
@@ -36,13 +36,13 @@ public class App extends Application {
         gameTypeChoiceBox.setValue("5T");
 
         ChoiceBox<String> AlgoChoiceBox = new ChoiceBox();
-        AlgoChoiceBox.getItems().addAll("Random","NMCS");
+        AlgoChoiceBox.getItems().addAll("Random");
         AlgoChoiceBox.setValue("Random");
 
 
         VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
-        menu.getChildren().addAll(gameName,gameTypeChoiceBox,playerButton,computerButton,AlgoChoiceBox,algorithmButton);
+        menu.getChildren().addAll(gameName,gameTypeChoiceBox,playerButton,computerButton,AlgoChoiceBox);
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         menuScene = new Scene(menu,screenBounds.getWidth(), screenBounds.getHeight());
@@ -106,8 +106,8 @@ public class App extends Application {
             case "Random":
                 return new RandomAI();
 
-            case "NMCS":
-                return new NMCSAI();
+            /*case "NMCS":
+                return new NMCSAI();*/
             default:
                 return new RandomAI();
         }

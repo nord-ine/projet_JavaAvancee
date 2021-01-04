@@ -1,7 +1,18 @@
 package org.nor.GameLogic;
 
+/**
+ * class that represents the initial grid of the game
+ */
 public class Grid {
 
+    /**
+     * static method that creates the initial grid of the game
+     * @param lineSize
+     * @param gridHight
+     * @param gridWidth
+     * @param gameVersion
+     * @return
+     */
     public static Point[][] startingGrid(int lineSize,int gridHight,int gridWidth,GameVersion gameVersion) {
         Point[][] gameGrid = new Point[gridHight][gridWidth];
         for (int i = 0; i < gridHight ; i++) {

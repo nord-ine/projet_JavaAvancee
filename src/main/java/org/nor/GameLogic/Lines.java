@@ -1,5 +1,8 @@
 package org.nor.GameLogic;
 
+/**
+ * class that represents a Line
+ */
 public class Lines {
 
     private Point extremite1;
@@ -8,7 +11,11 @@ public class Lines {
     private Direction direction;
 
 
-
+    /**
+     * class constructor
+     * @param s
+     * @param e
+     */
     public Lines(Point s, Point e){
         extremite1=s;
         extremite2=e;
@@ -32,9 +39,13 @@ public class Lines {
     public Point getExtremite1() {
         return extremite1;
     }
-    
-    
-    
+
+
+    /**
+     * method that returns true if a point is inside a line , returns false otherwise
+     * @param p
+     * @return
+     */
     public boolean isPointInLine(Point p){
         Point vecteur1 = new Point( p.getX() - this.getExtremite1().getX(),  p.getY() -this.getExtremite1().getY());
 
@@ -49,12 +60,22 @@ public class Lines {
         
         return false;
     }
-    
+
+    /**
+     * method that returns true if a point is an extremity of a line , returns false otherwise
+     * @param p
+     * @return
+     */
     public boolean isPointExtrimityLine(Point p) {
     	return p.equals(this.extremite1) || p.equals(this.extremite2);
     }
-    
-    
+
+
+    /**
+     * method that returns true if a point is inside a line but not an extremity , returns false otherwise
+     * @param p
+     * @return
+     */
     public boolean isPointTotallyInsideLine(Point p) {
     	return isPointInLine(p) && !isPointExtrimityLine(p);
     }

@@ -28,8 +28,8 @@ public class PointTest {
 		Lines l = new Lines(p1,p3);
 		List<Lines> ll = new ArrayList<>();
 		ll.add(l);
-		assertTrue(p2.isPointInSetLines(Direction.horizontal,ll));
-		assertFalse(p4.isPointInSetLines(Direction.horizontal,ll));
+		assertTrue(p2.isPointInListLines(Direction.horizontal,ll));
+		assertFalse(p4.isPointInListLines(Direction.horizontal,ll));
 	}
 	
 

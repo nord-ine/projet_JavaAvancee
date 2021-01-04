@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.nor.GameLogic.Lines;
 import org.nor.GameLogic.Point;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 
 public class LinesTest {

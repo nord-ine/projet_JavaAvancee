@@ -2,6 +2,9 @@ package org.nor.GameLogic;
 
 import java.util.List;
 
+/**
+ * class for a random research algorithm
+ */
 public class RandomAI extends AI{
 
 	@Override
