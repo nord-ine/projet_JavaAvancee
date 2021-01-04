@@ -13,7 +13,7 @@ import org.nor.GameLogic.*;
 
 
 /**
- * JavaFX App
+ * main entry to the javaFx App
  */
 public class App extends Application {
     private Scene menuScene;
@@ -65,15 +65,22 @@ public class App extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
 
+    /**
+     * getting linesize from user input (checkbox)
+     * @param cb ChoiceBox
+     * @return int
+     */
     private int getLineSize(ChoiceBox<String> cb){
             return Integer.parseInt(cb.getValue().substring(0,1));
 
     }
 
+    /**
+     * getting GameVersion from user input (checkbox)
+     * @param cb ChoiceBox
+     * @return GameVersion
+     */
     private GameVersion getGameVersion(ChoiceBox<String> cb){
 
         switch (cb.getValue().substring(1)){
@@ -88,6 +95,11 @@ public class App extends Application {
         }
     }
 
+    /**
+     * returns algorithm type selected by the user
+     * @param cb  ChoiceBox
+     * @return AI
+     */
     private AI getAIAlgorithm(ChoiceBox<String> cb){
 
         switch (cb.getValue()){

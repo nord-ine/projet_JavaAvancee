@@ -25,7 +25,12 @@ import org.nor.GameLogic.PointLines;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * class that contains the game scene object and the grid and methods to draw components in this scene
+ */
 public class GameScene {
+
     Scene sc;
     Stage window;
     Scene menu;
@@ -37,6 +42,11 @@ public class GameScene {
     final static int CELL_SIZE=28;
     private StringProperty scoreLabelValue = new SimpleStringProperty("score : 0");
 
+    /**
+     * @param window the GUI window
+     * @param menu the menu scene (created in the class App)
+     * @param model an instantiation of the Gamestate class
+     */
     public GameScene(Stage window, Scene menu, GameState model){
         this.menu=menu;
         this.window=window;
@@ -45,7 +55,9 @@ public class GameScene {
     }
 
 
-
+    /**
+     * method responsible for drawing the initial view of the game scene (buttons , initial grid)
+     */
     protected void buildGameScene(){
         Label gameVersionLabel = new Label("model.getGameVersion().toString()");
         Button goBackToMenuButton= new Button("quit game");
@@ -80,10 +92,18 @@ public class GameScene {
         sc= new Scene(borderPane,screenBounds.getWidth(), screenBounds.getHeight());
 
     }
+
+    /**
+     * method for updating the view of the score attribute
+     */
     public void updateScore(){
         scoreLabelValue.setValue("score : "+model.getScore());
     }
 
+
+    /**
+     * method responsible of drawing the grid
+     */
     protected void displayGrid(){
         Point p;
         for(int i=0; i<GameState.getGridHight(); i++) {
@@ -102,28 +122,35 @@ public class GameScene {
 
     }
 
+    /**
+     * creates an imageview component corresponding to the state value of the point p
+     * @param p Point
+     * @return  Imageview
+     */
     private ImageView getViewOfAPoint(Point p){
         ImageView viewPoint =new ImageView();
         viewPoint.xProperty().setValue(p.getX());
         viewPoint.yProperty().setValue(p.getY());
-
         viewPoint.setFitHeight(CELL_SIZE);
         viewPoint.setFitWidth(CELL_SIZE);
-        switch (p.getState()){
-            case -2:
-                viewPoint.setImage(new Image("file:src/main/Images/button-2.png"));
-                return viewPoint;
-            case -1:
+
+            if(p.getState()==-1) {
                 viewPoint.setImage(new Image("file:src/main/Images/button-1.png"));
                 return viewPoint;
-            default:
+            }
+            else {
                 viewPoint.setImage(new Image("file:src/main/Images/button0.png"));
                 return viewPoint;
+            }
         }
 
-    }
     //function to replace image of point with the shot number image
 
+    /**
+     * creates a stackpane by stacking an image with a text corresponding the value of the point's p state
+     * @param p Point
+     * @return  StackPane
+     */
     protected StackPane getViewOfAMovePoint(Point p){
         int i =p.getX();
         int j = p.getY();
@@ -138,16 +165,32 @@ public class GameScene {
         StackPane sp = new StackPane(imV,ll);
         return sp;
     }
+
+    /**
+     * draw a list of lines on the grid
+     * @param listLines
+     */
     private void drawAllLines(List<Lines> listLines){
         for(Lines l : listLines) drawLine(l);
     }
 
+
+    /**
+     * draw a line on the grid
+     * @param line
+     */
     protected void drawLine(Lines line){
         Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
         l.setStroke(Color.GRAY);
         stack.getChildren().add(l);
     }
 
+
+    /**
+     * draw red points on the grid to give a hint for the player about what points he can choose as move
+     * @param listPointLines PointLines
+     * @param playerController PlayerController
+     */
     public void drawCandidatePoints(List<PointLines> listPointLines, PlayerController playerController){
 
         for(PointLines pl : listPointLines){
@@ -165,6 +208,11 @@ public class GameScene {
             pointsGrid.add(viewPoint,pl.getPoint().getY(),pl.getPoint().getX());
         }
     }
+
+    /**
+     * method for erasing the red points drawn by the drawCandidatePoints method
+     * @param listPointLines PointLines
+     */
     public void eraseDrawOfCandidatePoints(List<PointLines> listPointLines){
 
         for(PointLines pl : listPointLines){
@@ -178,6 +226,12 @@ public class GameScene {
         }
     }
 
+
+    /**
+     * method for drawing possible lines to choose to play a move
+     * @param pl PointLines
+     * @param playerController PlayerController
+     */
     protected void drawChoiceLines(PointLines pl,PlayerController playerController){
         List<Line> listViewLine= new ArrayList<>();
         for(Lines line: pl.getLines()){
@@ -193,16 +247,25 @@ public class GameScene {
             stack.getChildren().add(l);
         }
     }
+
+    /**
+     * creates a random number between 0 and 255
+     * @return int
+     */
     private int getRandomRGBNumber(){
 
         return (int)(Math.random() * 255);
     }
 
 
+    /**
+     * method for mapping model coordinates to the view coordinates
+     * @param coordinate int
+     * @return double
+     */
     private double mapModelCoordinateToViewCoordinate(int coordinate){
         return coordinate*CELL_SIZE+CELL_SIZE/2;
     }
-
 
 
 }
