@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
 
-        stage.setTitle("Morpion Game");
+        stage.setTitle("Morpion Solitaire");
         stage.setResizable(false);
         stage.setMaximized(true);
 
@@ -50,7 +50,7 @@ public class App extends Application {
         playerButton.setOnAction(e -> {
                     GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox));
                     GameScene gameScene = new GameScene(stage,menuScene,gameModel);
-                    PlayerController pc = new PlayerController(gameModel,gameScene);
+                    new PlayerController(gameModel,gameScene);
                     stage.setScene(gameScene.getScene());
 
         });
@@ -58,7 +58,7 @@ public class App extends Application {
                     GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox), getAIAlgorithm(AlgoChoiceBox));
                     GameScene gameScene = new GameScene(stage, menuScene, gameModel);
                     stage.setScene(gameScene.getScene());
-                    AIController aic = new AIController(gameModel,gameScene);
+                    new AIController(gameModel,gameScene);
                 });
 
         stage.setScene(menuScene);

@@ -8,7 +8,7 @@ import java.util.List;
 
 
 import org.nor.GameLogic.Direction;
-import org.nor.GameLogic.Lines;
+import org.nor.GameLogic.Line;
 import org.nor.GameLogic.Point;
 
 public class PointTest {
@@ -26,8 +26,8 @@ public class PointTest {
 		Point p3 = new Point(8, 5);
 		Point p4 = new Point(8, 4);
 		
-		Lines l = new Lines(p1,p3);
-		List<Lines> ll = new ArrayList<>();
+		Line l = new Line(p1,p3);
+		List<Line> ll = new ArrayList<>();
 		ll.add(l);
 		assertTrue(p2.isPointInListLines(Direction.horizontal,ll));
 		assertFalse(p4.isPointInListLines(Direction.horizontal,ll));
@@ -40,8 +40,8 @@ public class PointTest {
 		Point p2 = new Point(8, 8);
 		Point p3 = new Point(8, 5);
 		
-		Lines l = new Lines(p1,p3);
-		List<Lines> ll = new ArrayList<>();
+		Line l = new Line(p1,p3);
+		List<Line> ll = new ArrayList<>();
 		ll.add(l);
 		assertTrue(p2.isPointTotallyInsideSetLines(Direction.horizontal,ll));
 		assertFalse(p3.isPointTotallyInsideSetLines(Direction.horizontal,ll));

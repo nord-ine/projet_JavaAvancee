@@ -15,7 +15,7 @@ public class GameStateTest {
 	public void changeStateTest() {
 		GameState gs = new GameState(5,new D());
 		Point p = new Point(0,0);
-		Lines l =  new Lines(new Point(1,1),new Point(2,2));
+		Line l =  new Line(new Point(1,1),new Point(2,2));
 		gs.changeState(p,l);
 		assertTrue(gs.getGameGrid()[0][0].getState() == p.getState());
 		assertTrue(gs.getAllListLines().contains(l));
@@ -28,8 +28,8 @@ public class GameStateTest {
 		Point p1 = new Point(gs.getGridHight()/2-2,gs.getGridHight()/2-1);
 		Point p2 = new Point(gs.getGridHight()/2-2,gs.getGridHight()/2-5);
 		
-		Lines l = new Lines(p1,p2);
-		List<Lines> ll = new ArrayList<>();
+		Line l = new Line(p1,p2);
+		List<Line> ll = new ArrayList<>();
 		ll.add(l);
 		PointLines pl = new PointLines(p1,ll);
 		

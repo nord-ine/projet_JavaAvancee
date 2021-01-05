@@ -14,7 +14,7 @@ public class AIController {
      * @param model GameState
      * @param view GameScene
      */
-    protected AIController(GameState model, GameScene view){
+     AIController(GameState model, GameScene view){
         this.view=view;
         this.model=model;
         playGame();

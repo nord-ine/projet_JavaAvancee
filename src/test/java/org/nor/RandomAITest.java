@@ -13,14 +13,14 @@ public class RandomAITest {
 
 	@Test
 	public void test() {
-		List<Lines> ll1 = new ArrayList<>();
-		Lines l1 = new Lines(new Point(0,0),new Point(1,1));
+		List<Line> ll1 = new ArrayList<>();
+		Line l1 = new Line(new Point(0,0),new Point(1,1));
 		ll1.add(l1);
 		
 		PointLines pl1 = new PointLines(new Point(8, 9), ll1);
 
-		List<Lines> ll2 = new ArrayList<>();
-		Lines l2 = new Lines(new Point(0,0),new Point(1,1));
+		List<Line> ll2 = new ArrayList<>();
+		Line l2 = new Line(new Point(0,0),new Point(1,1));
 		ll2.add(l2);
 		
 		PointLines pl2 = new PointLines(new Point(8, 9), ll1);

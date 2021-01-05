@@ -5,14 +5,14 @@ package org.nor.GameLogic;
  */
 public class OnePointOneLine {
 	private Point point;
-	private Lines line;
+	private Line line;
 
 	/**
 	 * class constructor
 	 * @param point
 	 * @param line
 	 */
-	public OnePointOneLine(Point point, Lines line) {
+	public OnePointOneLine(Point point, Line line) {
 		this.point=point;
 		this.line = line;
 	}
@@ -25,11 +25,11 @@ public class OnePointOneLine {
 		this.point = point;
 	}
 
-	public Lines getLine() {
+	public Line getLine() {
 		return line;
 	}
 
-	public void setLine(Lines line) {
+	public void setLine(Line line) {
 		this.line = line;
 	}
 

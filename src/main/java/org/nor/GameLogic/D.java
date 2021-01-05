@@ -16,7 +16,7 @@ public class D implements GameVersion {
 	 * @return
 	 */
 	@Override
-	public boolean canIUseThisPoint(Point p, Direction direction, List<Lines> listLines) {
+	public boolean canIUseThisPoint(Point p, Direction direction, List<Line> listLines) {
 		return p.getState() >= 0 && !p.isPointInListLines(direction, listLines);
 	}
 	

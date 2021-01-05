@@ -8,14 +8,14 @@ import java.util.*;
  */
 public class PointLines {
 	private Point point;
-	private List<Lines> listLines;
+	private List<Line> listLines;
 
 	/**
 	 * class constructor
 	 * @param p
 	 * @param l
 	 */
-	public PointLines(Point p, List<Lines> l){
+	public PointLines(Point p, List<Line> l){
 		this.point = p;
 		this.listLines = l;
 	}
@@ -24,14 +24,14 @@ public class PointLines {
 		return point;
 	}
 
-	public List<Lines> getListLines(){
+	public List<Line> getListLines(){
 		return listLines;
 	}
 	@Override
 	public String toString(){
 		String str = point.toString();
 		
-		for(Lines line : listLines) {
+		for(Line line : listLines) {
 			str = str +" "+ line.toString();
 		}
 		return str;

@@ -12,13 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.nor.GameLogic.GameState;
-import org.nor.GameLogic.Lines;
+import org.nor.GameLogic.Line;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;
 
@@ -59,7 +58,7 @@ public class GameScene {
     /**
      * method responsible for drawing the initial view of the game scene (buttons , initial grid)
      */
-    protected void buildGameScene(){
+     void buildGameScene(){
         Button goBackToMenuButton= new Button("quit game");
         goBackToMenuButton.setOnAction(e -> window.setScene(menu));
 
@@ -96,7 +95,7 @@ public class GameScene {
     /**
      * method for updating the view of the score attribute
      */
-    public void updateScore(){
+     void updateScore(){
         scoreLabelValue.setValue("score : "+model.getScore());
     }
 
@@ -104,7 +103,7 @@ public class GameScene {
     /**
      * method responsible of drawing the grid
      */
-    protected void displayGrid(){
+     void displayGrid(){
         Point p;
         for(int i=0; i<GameState.getGridHight(); i++) {
             for (int j = 0; j < GameState.getGridWidth(); j++) {
@@ -151,7 +150,7 @@ public class GameScene {
      * @param p Point
      * @return  StackPane
      */
-    protected StackPane getViewOfAMovePoint(Point p){
+     StackPane getViewOfAMovePoint(Point p){
         int i =p.getX();
         int j = p.getY();
 
@@ -170,8 +169,8 @@ public class GameScene {
      * draw a list of lines on the grid
      * @param listLines
      */
-    private void drawAllLines(List<Lines> listLines){
-        for(Lines l : listLines) drawLine(l);
+    private void drawAllLines(List<Line> listLines){
+        for(Line l : listLines) drawLine(l);
     }
 
 
@@ -179,8 +178,8 @@ public class GameScene {
      * draw a line on the grid
      * @param line
      */
-    protected void drawLine(Lines line){
-        Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
+     void drawLine(Line line){
+        javafx.scene.shape.Line l = new javafx.scene.shape.Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
         l.setStroke(Color.GRAY);
         stack.getChildren().add(l);
     }
@@ -213,7 +212,7 @@ public class GameScene {
      * method for erasing the red points drawn by the drawCandidatePoints method
      * @param listPointLines PointLines
      */
-    public void eraseDrawOfCandidatePoints(List<PointLines> listPointLines){
+     void eraseDrawOfCandidatePoints(List<PointLines> listPointLines){
 
         for(PointLines pl : listPointLines){
             ImageView viewPoint =new ImageView();
@@ -232,11 +231,11 @@ public class GameScene {
      * @param pl PointLines
      * @param playerController PlayerController
      */
-    protected void drawChoiceLines(PointLines pl,PlayerController playerController){
-        List<Line> listViewLine= new ArrayList<>();
-        for(Lines line: pl.getListLines()){
+     void drawChoiceLines(PointLines pl,PlayerController playerController){
+        List<javafx.scene.shape.Line> listViewLine= new ArrayList<>();
+        for(Line line: pl.getListLines()){
 
-            Line l = new Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
+            javafx.scene.shape.Line l = new javafx.scene.shape.Line(mapModelCoordinateToViewCoordinate(line.getExtremite1().getY()), mapModelCoordinateToViewCoordinate(line.getExtremite1().getX()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getY()),mapModelCoordinateToViewCoordinate(line.getExtremite2().getX()));
             listViewLine.add(l);
             l.setStroke(Color.rgb(getRandomRGBNumber(),getRandomRGBNumber(),getRandomRGBNumber()));
             l.setStrokeWidth(5);

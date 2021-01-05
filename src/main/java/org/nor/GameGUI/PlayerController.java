@@ -1,7 +1,7 @@
 package org.nor.GameGUI;
 
 import org.nor.GameLogic.GameState;
-import org.nor.GameLogic.Lines;
+import org.nor.GameLogic.Line;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;
 
@@ -22,12 +22,11 @@ public class PlayerController {
      * @param model GameState
      * @param view GameScene
      */
-   protected PlayerController(GameState model,GameScene view){
+    PlayerController(GameState model,GameScene view){
         this.view=view;
         this.model=model;
         listPointLines=model.getValidePoints();
         playMove(listPointLines);
-        //drawPointCandidates(listPointLines);
     }
 
 
@@ -44,8 +43,7 @@ public class PlayerController {
      * method for validating the choice of a line by the player
      * @param pl PointLines
      */
-    protected void validateLine(PointLines pl){
-        //System.out.println(p);
+     void validateLine(PointLines pl){
         if(pl.getListLines().size()>1){
 
             view.drawChoiceLines(pl,this);
@@ -61,7 +59,7 @@ public class PlayerController {
      * @param p Point
      * @param l Lines
      */
-    protected void validateMove(Point p, Lines l){
+     void validateMove(Point p, Line l){
         model.setScore(model.getScore()+1);
         p.setState(model.getScore());
         model.changeState(p,l);

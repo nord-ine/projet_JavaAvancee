@@ -102,8 +102,8 @@ public class Point {
      * @param listLines
      * @return
      */
-    public boolean isPointInListLines(Direction direction, List<Lines> listLines){
-        for(Lines l : listLines){
+    public boolean isPointInListLines(Direction direction, List<Line> listLines){
+        for(Line l : listLines){
             if(l.getDirection() == direction){
             	
                 if(l.isPointInLine(this)) {return true;}
@@ -119,8 +119,8 @@ public class Point {
      * @param setLines
      * @return
      */
-    public boolean isPointTotallyInsideSetLines(Direction direction, List<Lines> setLines){
-        for(Lines l : setLines){
+    public boolean isPointTotallyInsideSetLines(Direction direction, List<Line> setLines){
+        for(Line l : setLines){
             if(l.getDirection() == direction){
                 if(l.isPointTotallyInsideLine(this)) {;return true;}
             }

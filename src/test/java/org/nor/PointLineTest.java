@@ -7,21 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.nor.GameLogic.Lines;
+import org.nor.GameLogic.Line;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;
 
-public class PointLinesTest {
+public class PointLineTest {
 
 	@Test
 	public void equalsPointLinesTest() {
-		List<Lines> ll1 = new ArrayList<>();
-		Lines l1 = new Lines(new Point(0,0),new Point(1,1));
+		List<Line> ll1 = new ArrayList<>();
+		Line l1 = new Line(new Point(0,0),new Point(1,1));
 		ll1.add(l1);
 		
 
-		List<Lines> ll2 = new ArrayList<>();
-		Lines l2 = new Lines(new Point(0,0),new Point(1,1));
+		List<Line> ll2 = new ArrayList<>();
+		Line l2 = new Line(new Point(0,0),new Point(1,1));
 		ll2.add(l2);
 		
 		

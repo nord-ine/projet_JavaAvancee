@@ -20,7 +20,7 @@ public class GameState {
     private int score;
 
     private Point[][] gameGrid = new Point[GRID_HIGHT][GRID_WIDTH];
-    private List<Lines> allListLines = new ArrayList<>();
+    private List<Line> allListLines = new ArrayList<>();
 
 
 	/**
@@ -60,7 +60,7 @@ public class GameState {
 	 * @param p Point
 	 * @param l Lines
 	 */
-    public void changeState(Point p, Lines l) {
+    public void changeState(Point p, Line l) {
     	this.gameGrid[p.getX()][p.getY()].setState(p.getState());
     	this.allListLines.add(l);
     }
@@ -72,7 +72,7 @@ public class GameState {
 	public List<PointLines> getValidePoints(){
     	List<PointLines> listPointLines = new ArrayList<>();
     	PointLines pl;
-    	List<Lines> listLines;
+    	List<Line> listLines;
 
         for(int i =0; i < GRID_HIGHT; i++){
             for(int j=0; j < GRID_WIDTH; j++){
@@ -94,12 +94,12 @@ public class GameState {
 	 * @param p Point
 	 * @return List<Lines>
 	 */
-    private List<Lines> getValidLinesForAPoint(Point p){
+    private List<Line> getValidLinesForAPoint(Point p){
         int x = p.getX();
         int y = p.getY();
         int x_,y_;
 
-        List<Lines> candidatesLines= getCandidateLinesForAPoint(p);
+        List<Line> candidatesLines= getCandidateLinesForAPoint(p);
         x_ = 0;
         y_ = 0;
         Direction direction;
@@ -119,9 +119,9 @@ public class GameState {
         	       			else { direction = Direction.none;bool = false;}
                 			if(bool){
                 				if(!gameVersion.canIUseThisPoint(gameGrid[x_][y_], direction, allListLines)) {
-        		                    Iterator<Lines> it = candidatesLines.iterator();
+        		                    Iterator<Line> it = candidatesLines.iterator();
         		                    while(it.hasNext()) {
-        		                        Lines l = it.next() ;
+        		                        Line l = it.next() ;
         		                        
         		                        if(l.getDirection() == direction && l.isPointInLine(gameGrid[x_][y_])){
         		                            it.remove();
@@ -145,8 +145,8 @@ public class GameState {
 	 * @param p Point
 	 * @return List<Lines>
 	 */
-	private List<Lines> getCandidateLinesForAPoint(Point p){
-		List<Lines> candidateLines= new ArrayList<>();
+	private List<Line> getCandidateLinesForAPoint(Point p){
+		List<Line> candidateLines= new ArrayList<>();
 		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.horizontal));
 		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.vertical));
 		candidateLines.addAll(getCandidateLinesForAPointInOneDirection(p,Direction.diagonal1));
@@ -160,8 +160,8 @@ public class GameState {
 	 * @param direction
 	 * @return
 	 */
-	private List<Lines> getCandidateLinesForAPointInOneDirection(Point p,Direction direction){
-		List<Lines> candidateLinesInOneDirection= new ArrayList<>();
+	private List<Line> getCandidateLinesForAPointInOneDirection(Point p, Direction direction){
+		List<Line> candidateLinesInOneDirection= new ArrayList<>();
 		int x_, y_;
 		int x = p.getX(), y = p.getY();
 		for(int i = -((lineSize-1)) ; i <= 0 ; i++){
@@ -170,7 +170,7 @@ public class GameState {
 			y_ = y + incrY* i;
 			x_ = x +incrX*i;
 			if (Point.valideCoordianate(y_,GRID_WIDTH) && Point.valideCoordianate(x_,GRID_HIGHT) && Point.valideCoordianate(y_+incrY*(lineSize-1),GRID_WIDTH) && Point.valideCoordianate(x_+incrX*(lineSize-1),GRID_HIGHT))	{
-			candidateLinesInOneDirection.add(new Lines(gameGrid[x_][y_],gameGrid[x_+incrX*(lineSize-1)][y_+incrY*(lineSize-1)]));
+			candidateLinesInOneDirection.add(new Line(gameGrid[x_][y_],gameGrid[x_+incrX*(lineSize-1)][y_+incrY*(lineSize-1)]));
 			}
 		}
 
@@ -206,10 +206,10 @@ public class GameState {
 	public void setGameGrid(Point[][] gameGrid) {
 		this.gameGrid = gameGrid;
 	}
-	public List<Lines> getAllListLines() {
+	public List<Line> getAllListLines() {
 		return allListLines;
 	}
-	public void setAllListLines(List<Lines> allListLines) {
+	public void setAllListLines(List<Line> allListLines) {
 		this.allListLines = allListLines;
 	}
 	public static int getGridHight() {
