@@ -67,7 +67,7 @@ public class PlayerController {
         model.changeState(p,l);
         view.updateScore();
         view.drawLine(l);
-        view.pointsGrid.add(view.getViewOfAMovePoint(p),p.getY(),p.getX());
+        view.addViewToPointsGrid(p);
         listPointLines = model.getValidePoints();
         playMove(listPointLines);
     }

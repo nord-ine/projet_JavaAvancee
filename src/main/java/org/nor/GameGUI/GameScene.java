@@ -31,13 +31,14 @@ import java.util.List;
  */
 public class GameScene {
 
-    Scene sc;
-    Stage window;
-    Scene menu;
-    GameState model;
+    private Scene sc;
 
-    GridPane pointsGrid;
-    Pane stack;
+    private Stage window;
+    private Scene menu;
+    private GameState model;
+
+    private GridPane pointsGrid;
+    private Pane stack;
 
     final static int CELL_SIZE=20;
     private StringProperty scoreLabelValue = new SimpleStringProperty("score : 0");
@@ -266,6 +267,20 @@ public class GameScene {
         return coordinate*CELL_SIZE+CELL_SIZE/2;
     }
 
+    /**
+     * @return javaFX scene
+     */
+    Scene getScene() {
+        return this.sc;
+    }
+
+    /**
+     * changes the view of a Point in the grid
+     * @param p Point
+     */
+    void addViewToPointsGrid(Point p){
+        pointsGrid.add(getViewOfAMovePoint(p),p.getY(),p.getX());
+    }
 
 }
 

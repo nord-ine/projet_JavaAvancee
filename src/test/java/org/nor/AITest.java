@@ -1,13 +1,15 @@
 package org.nor;
 
-import static org.junit.Assert.*;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
+
 
 import org.nor.GameLogic.AI;
 import org.nor.GameLogic.D;
 import org.nor.GameLogic.GameState;
 import org.nor.GameLogic.RandomAI;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AITest {
 

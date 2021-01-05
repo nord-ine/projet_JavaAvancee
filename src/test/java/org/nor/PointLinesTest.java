@@ -1,11 +1,12 @@
 package org.nor;
 
-import static org.junit.Assert.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+
 import org.nor.GameLogic.Lines;
 import org.nor.GameLogic.Point;
 import org.nor.GameLogic.PointLines;

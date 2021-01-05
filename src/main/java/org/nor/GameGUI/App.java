@@ -51,13 +51,13 @@ public class App extends Application {
                     GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox));
                     GameScene gameScene = new GameScene(stage,menuScene,gameModel);
                     PlayerController pc = new PlayerController(gameModel,gameScene);
-                    stage.setScene(gameScene.sc);
+                    stage.setScene(gameScene.getScene());
 
         });
         computerButton.setOnAction(e -> {
                     GameState gameModel = new GameState(getLineSize(gameTypeChoiceBox), getGameVersion(gameTypeChoiceBox), getAIAlgorithm(AlgoChoiceBox));
                     GameScene gameScene = new GameScene(stage, menuScene, gameModel);
-                    stage.setScene(gameScene.sc);
+                    stage.setScene(gameScene.getScene());
                     AIController aic = new AIController(gameModel,gameScene);
                 });
 

@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class AI{
 
 	/**
-	 * abstract method implemented by searching algorithms classes to make a choose the next move from the candidate valid PointLines
+	 * abstract method implemented by searching algorithms classes to make a choice of  the next move from the candidate valid PointLines
 	 * @param listPointLines
 	 * @return OnePointOneLine
 	 */

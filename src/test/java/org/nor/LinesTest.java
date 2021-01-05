@@ -1,10 +1,11 @@
 package org.nor;
 
-import static org.junit.Assert.*;
+
 
 import org.nor.GameLogic.Lines;
 import org.nor.GameLogic.Point;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 
 public class LinesTest {
